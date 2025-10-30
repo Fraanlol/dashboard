@@ -7,20 +7,26 @@ import ProductsFilters from './components/ProductsFilters'
 import ProductsTable from './components/ProductsTable'
 import ProductsPagination from './components/ProductsPagination'
 import { getProducts } from '@api/products-api'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { ProductsResponse } from '@api/products-api'
+import {useProdStore} from '@stores/prodStore'
 
 export default function Products() {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
-    const { data, isLoading, isError } = useQuery<ProductsResponse>({
-        queryKey: ['products'],
-        queryFn: () => getProducts({ limit: '20' }),
+    let currentPage = useProdStore().currentPage
+    let rowsPerPage = useProdStore().rowsPerPage
+
+    const { data, isLoading, isError} = useQuery<ProductsResponse>({
+        queryKey: ['products', currentPage, rowsPerPage],
+        placeholderData: keepPreviousData,
+        queryFn: () => getProducts({limit: `${rowsPerPage}`, skip: `${(currentPage - 1) * rowsPerPage}`}),
     })
 
-    let products = data?.products
-
+    let products = data?.products || []
+    const totalItems = data?.total || 0
+    
     return (
         <MainLayout>
             <Grid container spacing={2} sx={{ mb: 3 }} alignItems="center">
@@ -51,7 +57,11 @@ export default function Products() {
                 isLoading={isLoading}
                 isError={isError}
             />
-            <ProductsPagination />
+            <ProductsPagination
+                totalItems={totalItems}
+                page={currentPage}
+                rowsPerPage={rowsPerPage}
+            />
             {isMobile && <AddProductButton />}
         </MainLayout>
     )

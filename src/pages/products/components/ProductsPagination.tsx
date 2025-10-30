@@ -8,56 +8,26 @@ import {
     Paper,
     Grid,
 } from '@mui/material'
-import { useProductsStore } from '@stores/productsStore'
-import { useMemo } from 'react'
+import {useProdStore} from '@stores/prodStore'
 
-export default function ProductsPagination() {
-    const products = useProductsStore((state) => state.products)
-    const searchQuery = useProductsStore((state) => state.searchQuery)
-    const filters = useProductsStore((state) => state.filters)
-    const page = useProductsStore((state) => state.page)
-    const rowsPerPage = useProductsStore((state) => state.rowsPerPage)
-    const setPage = useProductsStore((state) => state.setPage)
-    const setRowsPerPage = useProductsStore((state) => state.setRowsPerPage)
+
+export default function ProductsPagination({
+    totalItems,
+    page,
+    rowsPerPage,
+}: {
+    totalItems: number
+    page: number
+    rowsPerPage: number
+}) {
 
     // Calculate total filtered items
-    const totalItems = useMemo(() => {
-        return products.filter((product) => {
-            const matchesSearch =
-                product.name
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()) ||
-                product.category
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase())
-
-            const matchesCategory =
-                !filters.category || product.category === filters.category
-
-            const matchesStock =
-                filters.stockStatus === 'all' ||
-                (filters.stockStatus === 'low' &&
-                    product.stock > 0 &&
-                    product.stock < 20) ||
-                (filters.stockStatus === 'out' && product.stock === 0)
-
-            const matchesPrice =
-                filters.priceRange === 'all' ||
-                (filters.priceRange === 'low' && product.price < 50) ||
-                (filters.priceRange === 'medium' &&
-                    product.price >= 50 &&
-                    product.price < 200) ||
-                (filters.priceRange === 'high' && product.price >= 200)
-
-            return (
-                matchesSearch && matchesCategory && matchesStock && matchesPrice
-            )
-        }).length
-    }, [products, searchQuery, filters])
 
     const totalPages = Math.ceil(totalItems / rowsPerPage)
     const startItem = (page - 1) * rowsPerPage + 1
     const endItem = Math.min(page * rowsPerPage, totalItems)
+    const setCurrentPage = useProdStore().setCurrentPage
+    const setRowsPerPage = useProdStore().setRowsPerPage
 
     return (
         <Paper sx={{ mt: 3, p: 2 }}>
@@ -83,10 +53,8 @@ export default function ProductsPagination() {
                         <FormControl size="small">
                             <Select
                                 value={rowsPerPage}
-                                onChange={(e) =>
-                                    setRowsPerPage(Number(e.target.value))
-                                }
                                 sx={{ minWidth: 70 }}
+                                onChange={(e) => setRowsPerPage(e.target.value as number)}
                             >
                                 <MenuItem value={10}>10</MenuItem>
                                 <MenuItem value={25}>25</MenuItem>
@@ -99,8 +67,6 @@ export default function ProductsPagination() {
                         </Typography>
                     </Box>
                 </Grid>
-
-                {/* Right side - Pagination */}
                 <Grid size={{ xs: 12, sm: 'auto' }}>
                     <Box
                         sx={{
@@ -110,8 +76,11 @@ export default function ProductsPagination() {
                     >
                         <Pagination
                             count={totalPages}
+                            siblingCount={0}
+                            boundaryCount={1}
+                            size='small'
                             page={page}
-                            onChange={(_, value) => setPage(value)}
+                            onChange={(_, value) => setCurrentPage(value)}
                             color="primary"
                             shape="rounded"
                             showFirstButton

@@ -11,7 +11,19 @@ export interface Product {
     status: 'active' | 'inactive'
 }
 
-const useProdStore = create<Product[]>( set => ({
-    
+export interface ProdStore {
+    currentPage: number
+    rowsPerPage: number
+    setCurrentPage: (page: number) => void
+    setRowsPerPage: (rowsPerPage: number) => void
+}
+
+const useProdStore = create<ProdStore>( set => ({
+    currentPage: 1,
+    rowsPerPage: 10,
+    setCurrentPage: (page: number) => set({ currentPage: page }),
+    setRowsPerPage: (rowsPerPage: number) => set({ rowsPerPage }),
 })
-)>
+)
+
+export { useProdStore }
