@@ -1,30 +1,24 @@
-import { Box, Chip, Typography } from '@mui/material'
-import { useProductsStore } from '@stores/productsStore'
+import {
+    Box,
+    Chip,
+    Typography,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+} from '@mui/material'
+import FilterListIcon from '@mui/icons-material/FilterList'
+import CloseIcon from '@mui/icons-material/Close'
+import { useProdStore } from '@stores/prodStore'
 
-export interface ProductFilters {
-    category: string | null
-    stockStatus: 'all' | 'low' | 'out'
-    priceRange: 'all' | 'low' | 'medium' | 'high'
-}
+export default function ProductsFilters({
+    categories,
+}: {
+    categories: number[]
+}) {
+    const currentCategory = useProdStore((state) => state.currentCategory)
+    const setCurrentCategory = useProdStore((state) => state.setCurrentCategory)
 
-const CATEGORIES = ['Electronics', 'Clothing', 'Food', 'Home', 'Sports', 'Toys']
-
-const STOCK_FILTERS = [
-    { label: 'All Stock', value: 'all' as const },
-    { label: 'Low Stock', value: 'low' as const },
-    { label: 'Out of Stock', value: 'out' as const },
-]
-
-const PRICE_FILTERS = [
-    { label: 'All Prices', value: 'all' as const },
-    { label: '$0-$50', value: 'low' as const },
-    { label: '$50-$200', value: 'medium' as const },
-    { label: '$200+', value: 'high' as const },
-]
-
-export default function ProductsFilters() {
-    const filters = useProductsStore((state) => state.filters)
-    const setFilters = useProductsStore((state) => state.setFilters)
     return (
         <Box sx={{ mb: 3 }}>
             {/* Categories */}
@@ -36,35 +30,42 @@ export default function ProductsFilters() {
                     Categories
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                    <Chip
-                        label="All"
-                        onClick={() =>
-                            setFilters({ ...filters, category: null })
-                        }
-                        color={
-                            filters.category === null ? 'primary' : 'default'
-                        }
-                        variant={
-                            filters.category === null ? 'filled' : 'outlined'
-                        }
-                    />
-                    {CATEGORIES.map((category) => (
+                    {/* Icon decorativo */}
+                    <FilterListIcon sx={{ color: 'text.secondary' }} />
+
+                    {/* Select de categorías */}
+                    <FormControl size="small" sx={{ minWidth: 220 }}>
+                        <InputLabel>Filter by Category</InputLabel>
+                        <Select
+                            value={currentCategory || ''}
+                            label="Filter by Category"
+                            onChange={(e) =>
+                                setCurrentCategory(e.target.value || 'all')
+                            }
+                            sx={{ bgcolor: 'white' }}
+                        >
+                            <MenuItem value="all">
+                                <em>All Categories</em>
+                            </MenuItem>
+                            {categories.map((cat) => (
+                                <MenuItem key={cat} value={cat}>
+                                    {cat}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                    {/* Chip mostrando filtro activo */}
+                    {currentCategory && (
                         <Chip
-                            key={category}
-                            label={category}
-                            onClick={() => setFilters({ ...filters, category })}
-                            color={
-                                filters.category === category
-                                    ? 'primary'
-                                    : 'default'
-                            }
-                            variant={
-                                filters.category === category
-                                    ? 'filled'
-                                    : 'outlined'
-                            }
+                            label={currentCategory}
+                            onDelete={() => setCurrentCategory('all')}
+                            color="primary"
+                            variant="outlined"
+                            deleteIcon={<CloseIcon />}
+                            sx={{ fontWeight: 500 }}
                         />
-                    ))}
+                    )}
                 </Box>
             </Box>
 
@@ -76,14 +77,13 @@ export default function ProductsFilters() {
                 >
                     Stock Status
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                {/* <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     {STOCK_FILTERS.map((filter) => (
                         <Chip
                             key={filter.value}
                             label={filter.label}
                             onClick={() =>
                                 setFilters({
-                                    ...filters,
                                     stockStatus: filter.value,
                                 })
                             }
@@ -99,7 +99,7 @@ export default function ProductsFilters() {
                             }
                         />
                     ))}
-                </Box>
+                </Box> */}
             </Box>
 
             {/* Price Range */}
@@ -110,7 +110,7 @@ export default function ProductsFilters() {
                 >
                     Price Range
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                {/* <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     {PRICE_FILTERS.map((filter) => (
                         <Chip
                             key={filter.value}
@@ -133,7 +133,7 @@ export default function ProductsFilters() {
                             }
                         />
                     ))}
-                </Box>
+                </Box> */}
             </Box>
         </Box>
     )

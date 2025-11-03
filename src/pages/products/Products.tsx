@@ -6,27 +6,52 @@ import ProductsSearch from './components/ProductsSearch'
 import ProductsFilters from './components/ProductsFilters'
 import ProductsTable from './components/ProductsTable'
 import ProductsPagination from './components/ProductsPagination'
-import { getProducts } from '@api/products-api'
+import { getCategories, getProducts } from '@api/products-api'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
-import { ProductsResponse } from '@api/products-api'
-import {useProdStore} from '@stores/prodStore'
+import { CategoryResponse, ProductsResponse } from '@api/products-api'
+import { useProdStore } from '@stores/prodStore'
 
 export default function Products() {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
-    let currentPage = useProdStore().currentPage
-    let rowsPerPage = useProdStore().rowsPerPage
+    const currentPage = useProdStore((state) => state.currentPage)
+    const rowsPerPage = useProdStore((state) => state.rowsPerPage)
+    const categoryFilter = useProdStore((state) => state.currentCategory)
 
-    const { data, isLoading, isError} = useQuery<ProductsResponse>({
-        queryKey: ['products', currentPage, rowsPerPage],
+    const { data, isLoading, isError } = useQuery<ProductsResponse>({
+        queryKey: ['products', currentPage, rowsPerPage, categoryFilter],
         placeholderData: keepPreviousData,
-        queryFn: () => getProducts({limit: `${rowsPerPage}`, skip: `${(currentPage - 1) * rowsPerPage}`}),
+        queryFn: () => {
+            const baseParams = {
+                limit: `${rowsPerPage}`,
+                skip: `${(currentPage - 1) * rowsPerPage}`,
+            }
+
+            // Si DummyJSON usa /products/category/{category}
+            if (categoryFilter !== 'all') {
+                return getProducts({
+                    ...baseParams,
+                    category: categoryFilter,
+                })
+            }
+
+            return getProducts(baseParams)
+        },
     })
 
+    const { data: categories } = useQuery({
+        queryKey: ['categories'],
+        queryFn: () => {
+            return getCategories()
+        },
+    })
+
+    const categoriesList =
+        categories?.flatMap((cat: CategoryResponse) => cat.slug) || []
     let products = data?.products || []
     const totalItems = data?.total || 0
-    
+
     return (
         <MainLayout>
             <Grid container spacing={2} sx={{ mb: 3 }} alignItems="center">
@@ -50,7 +75,7 @@ export default function Products() {
             </Grid>
 
             <ProductsKPI />
-            <ProductsFilters />
+            <ProductsFilters categories={categoriesList} />
             <ProductsSearch />
             <ProductsTable
                 products={products}
