@@ -8,8 +8,9 @@ import ProductsTable from './components/ProductsTable'
 import ProductsPagination from './components/ProductsPagination'
 import { getCategories, getProducts } from '@api/products-api'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
-import { CategoryResponse, ProductsResponse } from '@api/products-api'
+import { ProductsResponse } from '@api/products-api'
 import { useProdStore } from '@stores/prodStore'
+import { useMemo } from 'react'
 
 export default function Products() {
     const theme = useTheme()
@@ -18,39 +19,129 @@ export default function Products() {
     const currentPage = useProdStore((state) => state.currentPage)
     const rowsPerPage = useProdStore((state) => state.rowsPerPage)
     const categoryFilter = useProdStore((state) => state.currentCategory)
+    const sortField = useProdStore((state) => state.sortField)
+    const sortOrder = useProdStore((state) => state.sortOrder)
 
     const { data, isLoading, isError } = useQuery<ProductsResponse>({
-        queryKey: ['products', currentPage, rowsPerPage, categoryFilter],
+        queryKey: ['products', categoryFilter],
         placeholderData: keepPreviousData,
         queryFn: () => {
             const baseParams = {
-                limit: `${rowsPerPage}`,
-                skip: `${(currentPage - 1) * rowsPerPage}`,
+                limit: '300',
             }
-
-            // Si DummyJSON usa /products/category/{category}
             if (categoryFilter !== 'all') {
                 return getProducts({
                     ...baseParams,
                     category: categoryFilter,
                 })
             }
-
             return getProducts(baseParams)
         },
     })
 
-    const { data: categories } = useQuery({
-        queryKey: ['categories'],
-        queryFn: () => {
-            return getCategories()
-        },
-    })
+    const { data: categoriesList, isLoading: catsLoading } = useQuery<string[]>(
+        {
+            queryKey: ['categories'],
+            queryFn: () => getCategories(),
+            staleTime: 1000 * 60 * 60 * 24,
+            gcTime: Infinity,
+        }
+    )
 
-    const categoriesList =
-        categories?.flatMap((cat: CategoryResponse) => cat.slug) || []
+    const searchQuery = useProdStore((state) => state.searchQuery)
+    const filters = useProdStore((state) => state.filters)
+
     let products = data?.products || []
-    const totalItems = data?.total || 0
+
+    const filteredProducts = useMemo(() => {
+        const hasFilters =
+            searchQuery.trim() ||
+            (filters.stockStatus && filters.stockStatus !== 'all') ||
+            (filters.priceRange && filters.priceRange !== 'all')
+
+        if (!hasFilters) {
+            return products
+        }
+
+        let filtered = [...products]
+        if (searchQuery.trim()) {
+            filtered = filtered.filter(
+                (product) =>
+                    product.title
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                    product.category
+                        ?.toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+            )
+        }
+
+        if (filters.stockStatus && filters.stockStatus !== 'all') {
+            filtered = filtered.filter((product) => {
+                switch (filters.stockStatus) {
+                    case 'in-stock':
+                        return product.stock > 10
+                    case 'low-stock':
+                        return product.stock > 0 && product.stock <= 10
+                    case 'out-of-stock':
+                        return product.stock === 0
+                    default:
+                        return true
+                }
+            })
+        }
+
+        if (filters.priceRange && filters.priceRange !== 'all') {
+            filtered = filtered.filter((product) => {
+                switch (filters.priceRange) {
+                    case 'under-50':
+                        return product.price < 50
+                    case '50-100':
+                        return product.price >= 50 && product.price <= 100
+                    case '100-500':
+                        return product.price > 100 && product.price <= 500
+                    case 'over-500':
+                        return product.price > 500
+                    default:
+                        return true
+                }
+            })
+        }
+
+        return filtered
+    }, [products, searchQuery, filters])
+
+    const sortedProducts = useMemo(() => {
+        if (!sortField) return filteredProducts
+
+        const sorted = [...filteredProducts]
+
+        sorted.sort((a, b) => {
+            const aValue = a[sortField]
+            const bValue = b[sortField]
+
+            // Handle string comparison
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                const comparison = aValue.localeCompare(bValue)
+                return sortOrder === 'asc' ? comparison : -comparison
+            }
+
+            // Handle number comparison
+            if (typeof aValue === 'number' && typeof bValue === 'number') {
+                return sortOrder === 'asc' ? aValue - bValue : bValue - aValue
+            }
+
+            return 0
+        })
+
+        return sorted
+    }, [filteredProducts, sortField, sortOrder])
+    const paginatedProducts = useMemo(() => {
+        const startIndex = (currentPage - 1) * rowsPerPage
+        return sortedProducts.slice(startIndex, startIndex + rowsPerPage)
+    }, [sortedProducts, currentPage, rowsPerPage])
+
+    const totalItems = sortedProducts.length
 
     return (
         <MainLayout>
@@ -75,10 +166,13 @@ export default function Products() {
             </Grid>
 
             <ProductsKPI />
-            <ProductsFilters categories={categoriesList} />
+            <ProductsFilters
+                categories={categoriesList}
+                isLoading={catsLoading}
+            />
             <ProductsSearch />
             <ProductsTable
-                products={products}
+                products={paginatedProducts}
                 isLoading={isLoading}
                 isError={isError}
             />

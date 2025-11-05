@@ -6,18 +6,52 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Button,
 } from '@mui/material'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import CloseIcon from '@mui/icons-material/Close'
+import ClearIcon from '@mui/icons-material/Clear'
 import { useProdStore } from '@stores/prodStore'
+import { use } from 'react'
 
 export default function ProductsFilters({
     categories,
+    isLoading,
 }: {
-    categories: number[]
+    categories: string[] | undefined
+    isLoading: boolean
 }) {
     const currentCategory = useProdStore((state) => state.currentCategory)
     const setCurrentCategory = useProdStore((state) => state.setCurrentCategory)
+
+    const filters = useProdStore((state) => state.filters)
+    const setStockStatus = useProdStore((state) => state.setStockStatus)
+    const setPriceRange = useProdStore((state) => state.setPriceRange)
+    const sortField = useProdStore((state) => state.sortField)
+    // Función para resetear todos los filtros
+    const resetAllFilters = useProdStore((state) => state.resetFilters)
+
+    // Helper para verificar si hay filtros activos
+    const hasActiveFilters =
+        currentCategory !== 'all' ||
+        filters.stockStatus !== 'all' ||
+        filters.priceRange !== 'all' ||
+        sortField !== null
+
+    const STOCK_FILTERS = [
+        { label: 'All Stock', value: 'all' },
+        { label: 'In Stock', value: 'in-stock' },
+        { label: 'Low Stock', value: 'low-stock' },
+        { label: 'Out of Stock', value: 'out-of-stock' },
+    ]
+
+    const PRICE_FILTERS = [
+        { label: 'All Prices', value: 'all' },
+        { label: 'Under $50', value: 'under-50' },
+        { label: '$50 - $100', value: '50-100' },
+        { label: '$100 - $500', value: '100-500' },
+        { label: 'Over $500', value: 'over-500' },
+    ]
 
     return (
         <Box sx={{ mb: 3 }}>
@@ -47,7 +81,7 @@ export default function ProductsFilters({
                             <MenuItem value="all">
                                 <em>All Categories</em>
                             </MenuItem>
-                            {categories.map((cat) => (
+                            {categories?.map((cat) => (
                                 <MenuItem key={cat} value={cat}>
                                     {cat}
                                 </MenuItem>
@@ -77,16 +111,12 @@ export default function ProductsFilters({
                 >
                     Stock Status
                 </Typography>
-                {/* <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     {STOCK_FILTERS.map((filter) => (
                         <Chip
                             key={filter.value}
                             label={filter.label}
-                            onClick={() =>
-                                setFilters({
-                                    stockStatus: filter.value,
-                                })
-                            }
+                            onClick={() => setStockStatus(filter.value)}
                             color={
                                 filters.stockStatus === filter.value
                                     ? 'primary'
@@ -99,7 +129,7 @@ export default function ProductsFilters({
                             }
                         />
                     ))}
-                </Box> */}
+                </Box>
             </Box>
 
             {/* Price Range */}
@@ -110,17 +140,12 @@ export default function ProductsFilters({
                 >
                     Price Range
                 </Typography>
-                {/* <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     {PRICE_FILTERS.map((filter) => (
                         <Chip
                             key={filter.value}
                             label={filter.label}
-                            onClick={() =>
-                                setFilters({
-                                    ...filters,
-                                    priceRange: filter.value,
-                                })
-                            }
+                            onClick={() => setPriceRange(filter.value)}
                             color={
                                 filters.priceRange === filter.value
                                     ? 'primary'
@@ -133,8 +158,23 @@ export default function ProductsFilters({
                             }
                         />
                     ))}
-                </Box> */}
+                </Box>
             </Box>
+
+            {/* Reset Filters Button */}
+            {hasActiveFilters && (
+                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<ClearIcon />}
+                        onClick={resetAllFilters}
+                        size="small"
+                        sx={{ borderRadius: 2 }}
+                    >
+                        Clear All Filters
+                    </Button>
+                </Box>
+            )}
         </Box>
     )
 }

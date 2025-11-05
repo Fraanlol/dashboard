@@ -284,16 +284,24 @@ const UsersTable = () => {
                                             <EditIcon fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
-                                    <Tooltip title="Suspend">
-                                        <IconButton
-                                            size="small"
-                                            color="warning"
-                                            disabled={
-                                                user.status === 'suspended'
-                                            }
-                                        >
-                                            <BlockIcon fontSize="small" />
-                                        </IconButton>
+                                    <Tooltip
+                                        title={
+                                            user.status === 'suspended'
+                                                ? 'Already suspended'
+                                                : 'Suspend'
+                                        }
+                                    >
+                                        <span>
+                                            <IconButton
+                                                size="small"
+                                                color="warning"
+                                                disabled={
+                                                    user.status === 'suspended'
+                                                }
+                                            >
+                                                <BlockIcon fontSize="small" />
+                                            </IconButton>
+                                        </span>
                                     </Tooltip>
                                     <Tooltip title="Delete">
                                         <IconButton

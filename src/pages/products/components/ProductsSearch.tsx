@@ -1,10 +1,10 @@
 import { TextField, InputAdornment, Paper } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { useProductsStore } from '@stores/productsStore'
+import { useProdStore } from '@stores/prodStore'
 
 export default function ProductsSearch() {
-    const searchQuery = useProductsStore((state) => state.searchQuery)
-    const setSearchQuery = useProductsStore((state) => state.setSearchQuery)
+    const searchQuery = useProdStore((state) => state.searchQuery)
+    const setSearchQuery = useProdStore((state) => state.setSearchQuery)
 
     return (
         <Paper sx={{ p: 2, mb: 3 }}>

@@ -1,11 +1,5 @@
 import { Product } from '@stores/prodStore'
 
-export interface CategoryResponse {
-    slug?: number
-    name?: string
-    url?: string
-}
-
 export interface ProductsResponse {
     products: Product[]
     total: number
@@ -33,6 +27,6 @@ export const getProductById = async (id: number) => {
 }
 
 export const getCategories = async () => {
-    const res = await fetch(`https://dummyjson.com/products/categories`)
+    const res = await fetch(`https://dummyjson.com/products/category-list`)
     return res.json()
 }
