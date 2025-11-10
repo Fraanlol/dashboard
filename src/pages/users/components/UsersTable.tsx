@@ -10,6 +10,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TableSortLabel,
     Tooltip,
     useTheme,
 } from '@mui/material'
@@ -19,154 +20,92 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import BlockIcon from '@mui/icons-material/Block'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 
-type SortField =
-    | 'name'
-    | 'email'
-    | 'role'
-    | 'status'
-    | 'lastActivity'
-    | 'registeredAt'
-type SortOrder = 'asc' | 'desc'
-
-const UsersTable = () => {
+const UsersTable = ({
+    users,
+    isLoading,
+    isError,
+}: {
+    users: User[]
+    isLoading: boolean
+    isError: boolean
+}) => {
     const theme = useTheme()
-    const users = useUsersStore((state) => state.users)
     const searchQuery = useUsersStore((state) => state.searchQuery)
     const filters = useUsersStore((state) => state.filters)
-    const page = useUsersStore((state) => state.page)
+    const currentPage = useUsersStore((state) => state.currentPage)
     const rowsPerPage = useUsersStore((state) => state.rowsPerPage)
-    const deleteUser = useUsersStore((state) => state.deleteUser)
+    const setSorting = useUsersStore((state) => state.setSorting)
+    const sortField = useUsersStore((state) => state.sortField)
+    const sortOrder = useUsersStore((state) => state.sortOrder)
 
-    const [sortField, setSortField] = useState<SortField>('name')
-    const [sortOrder, setSortOrder] = useState<SortOrder>('asc')
-
-    const handleSort = (field: SortField) => {
-        if (sortField === field) {
-            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
-        } else {
-            setSortField(field)
-            setSortOrder('asc')
-        }
-    }
-
-    const filteredUsers = useMemo(() => {
-        let result = users
-
-        // Search filter
-        if (searchQuery) {
-            const query = searchQuery.toLowerCase()
-            result = result.filter(
-                (user) =>
-                    user.name.toLowerCase().includes(query) ||
-                    user.email.toLowerCase().includes(query)
-            )
-        }
-
-        // Role filter
-        if (filters.role) {
-            result = result.filter((user) => user.role === filters.role)
-        }
-
-        // Status filter
-        if (filters.status !== 'all') {
-            result = result.filter((user) => user.status === filters.status)
-        }
-
-        return result
-    }, [users, searchQuery, filters])
-
-    const sortedAndPaginatedUsers = useMemo(() => {
-        const sorted = [...filteredUsers].sort((a, b) => {
-            let aValue: string | number
-            let bValue: string | number
-
-            switch (sortField) {
-                case 'name':
-                case 'email':
-                case 'role':
-                case 'status':
-                    aValue = a[sortField]
-                    bValue = b[sortField]
-                    break
-                case 'lastActivity':
-                case 'registeredAt':
-                    aValue = a[sortField]
-                    bValue = b[sortField]
-                    break
-                default:
-                    return 0
-            }
-
-            if (sortOrder === 'asc') {
-                return aValue > bValue ? 1 : -1
-            } else {
-                return aValue < bValue ? 1 : -1
-            }
-        })
-
-        const startIndex = (page - 1) * rowsPerPage
-        const endIndex = startIndex + rowsPerPage
-        return sorted.slice(startIndex, endIndex)
-    }, [filteredUsers, sortField, sortOrder, page, rowsPerPage])
-
-    const getRoleColor = (role: User['role']) => {
+    const getRoleColor = (role: string) => {
         switch (role) {
             case 'admin':
                 return 'error'
             case 'user':
                 return 'primary'
-            case 'guest':
-                return 'default'
+            case 'moderator':
+                return 'warning'
             default:
                 return 'default'
         }
     }
 
-    const getStatusColor = (status: User['status']) => {
+    const generateStatus = (
+        name: string
+    ): 'active' | 'inactive' | 'suspended' => {
+        const firstChar = name.charAt(0).toLowerCase()
+
+        if (firstChar >= 'a' && firstChar <= 'h') {
+            return 'active'
+        } else if (firstChar >= 'i' && firstChar <= 'r') {
+            return 'inactive'
+        } else {
+            return 'suspended'
+        }
+    }
+
+    const getStatusChip = (status: 'active' | 'inactive' | 'suspended') => {
         switch (status) {
             case 'active':
-                return 'success'
+                return (
+                    <Chip
+                        label="ACTIVE"
+                        color="success"
+                        size="small"
+                        sx={{ fontWeight: 600 }}
+                    />
+                )
             case 'inactive':
-                return 'warning'
+                return (
+                    <Chip
+                        label="INACTIVE"
+                        color="warning"
+                        size="small"
+                        sx={{ fontWeight: 600 }}
+                    />
+                )
             case 'suspended':
-                return 'error'
+                return (
+                    <Chip
+                        label="SUSPENDED"
+                        color="error"
+                        size="small"
+                        sx={{ fontWeight: 600 }}
+                    />
+                )
             default:
-                return 'default'
+                return (
+                    <Chip
+                        label="UNKNOWN"
+                        color="default"
+                        size="small"
+                        sx={{ fontWeight: 600 }}
+                    />
+                )
         }
     }
-
-    const SortableHeader = ({
-        field,
-        children,
-    }: {
-        field: SortField
-        children: React.ReactNode
-    }) => (
-        <TableCell
-            onClick={() => handleSort(field)}
-            sx={{
-                cursor: 'pointer',
-                userSelect: 'none',
-                fontWeight: 600,
-                '&:hover': {
-                    backgroundColor: theme.palette.action.hover,
-                },
-            }}
-        >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                {children}
-                {sortField === field &&
-                    (sortOrder === 'asc' ? (
-                        <ArrowUpwardIcon sx={{ fontSize: 16 }} />
-                    ) : (
-                        <ArrowDownwardIcon sx={{ fontSize: 16 }} />
-                    ))}
-            </Box>
-        </TableCell>
-    )
 
     return (
         <TableContainer
@@ -206,116 +145,186 @@ const UsersTable = () => {
                         }}
                     >
                         <TableCell sx={{ fontWeight: 600 }}>Avatar</TableCell>
-                        <SortableHeader field="name">Name</SortableHeader>
-                        <SortableHeader field="email">Email</SortableHeader>
-                        <SortableHeader field="role">Role</SortableHeader>
-                        <SortableHeader field="status">Status</SortableHeader>
-                        <SortableHeader field="lastActivity">
-                            Last Activity
-                        </SortableHeader>
-                        <SortableHeader field="registeredAt">
-                            Registered
-                        </SortableHeader>
+                        <TableCell sx={{ fontWeight: 600 }}>
+                            <TableSortLabel
+                                active={sortField === 'name'}
+                                direction={
+                                    sortField === 'name' && sortOrder
+                                        ? sortOrder
+                                        : 'asc'
+                                }
+                                onClick={() => setSorting('name')}
+                            >
+                                Name
+                            </TableSortLabel>
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: 600 }}>
+                            <TableSortLabel
+                                active={sortField === 'email'}
+                                direction={
+                                    sortField === 'email' && sortOrder
+                                        ? sortOrder
+                                        : 'asc'
+                                }
+                                onClick={() => setSorting('email')}
+                            >
+                                Email
+                            </TableSortLabel>
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: 600 }}>
+                            <TableSortLabel
+                                active={sortField === 'role'}
+                                direction={
+                                    sortField === 'role' && sortOrder
+                                        ? sortOrder
+                                        : 'asc'
+                                }
+                                onClick={() => setSorting('role')}
+                            >
+                                Role
+                            </TableSortLabel>
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: 600 }}>
+                            <TableSortLabel
+                                active={sortField === 'status'}
+                                direction={
+                                    sortField === 'status' && sortOrder
+                                        ? sortOrder
+                                        : 'asc'
+                                }
+                                onClick={() => setSorting('status')}
+                            >
+                                Status
+                            </TableSortLabel>
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: 600 }}>
+                            <TableSortLabel
+                                active={sortField === 'lastActivity'}
+                                direction={
+                                    sortField === 'lastActivity' && sortOrder
+                                        ? sortOrder
+                                        : 'asc'
+                                }
+                                onClick={() => setSorting('lastActivity')}
+                            >
+                                Last Activity
+                            </TableSortLabel>
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: 600 }}>
+                            <TableSortLabel
+                                active={sortField === 'registeredAt'}
+                                direction={
+                                    sortField === 'registeredAt' && sortOrder
+                                        ? sortOrder
+                                        : 'asc'
+                                }
+                                onClick={() => setSorting('registeredAt')}
+                            >
+                                Registered
+                            </TableSortLabel>
+                        </TableCell>
                         <TableCell sx={{ fontWeight: 600 }}>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedAndPaginatedUsers.map((user) => (
-                        <TableRow
-                            key={user.id}
-                            sx={{
-                                '&:hover': {
-                                    backgroundColor: theme.palette.action.hover,
-                                },
-                            }}
-                        >
-                            <TableCell>
-                                <Avatar src={user.avatar} alt={user.name} />
-                            </TableCell>
-                            <TableCell sx={{ fontWeight: 500 }}>
-                                {user.name}
-                            </TableCell>
-                            <TableCell
-                                sx={{ color: theme.palette.text.secondary }}
+                    {users.map((user) => {
+                        const userStatus = generateStatus(user.firstName)
+                        return (
+                            <TableRow
+                                key={user.id}
+                                sx={{
+                                    '&:hover': {
+                                        backgroundColor:
+                                            theme.palette.action.hover,
+                                    },
+                                }}
                             >
-                                {user.email}
-                            </TableCell>
-                            <TableCell>
-                                <Chip
-                                    label={user.role.toUpperCase()}
-                                    color={getRoleColor(user.role)}
-                                    size="small"
-                                    sx={{ fontWeight: 600 }}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <Chip
-                                    label={
-                                        user.status.charAt(0).toUpperCase() +
-                                        user.status.slice(1)
-                                    }
-                                    color={getStatusColor(user.status)}
-                                    size="small"
-                                    variant="outlined"
-                                />
-                            </TableCell>
-                            <TableCell
-                                sx={{ color: theme.palette.text.secondary }}
-                            >
-                                {user.lastActivity}
-                            </TableCell>
-                            <TableCell
-                                sx={{ color: theme.palette.text.secondary }}
-                            >
-                                {user.registeredAt}
-                            </TableCell>
-                            <TableCell>
-                                <Box sx={{ display: 'flex', gap: 1 }}>
-                                    <Tooltip title="View">
-                                        <IconButton size="small" color="info">
-                                            <VisibilityIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Edit">
-                                        <IconButton
-                                            size="small"
-                                            color="primary"
-                                        >
-                                            <EditIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip
-                                        title={
-                                            user.status === 'suspended'
-                                                ? 'Already suspended'
-                                                : 'Suspend'
-                                        }
-                                    >
-                                        <span>
+                                <TableCell>
+                                    <Avatar
+                                        src={user.avatar}
+                                        alt={user.firstName}
+                                    />
+                                </TableCell>
+                                <TableCell sx={{ fontWeight: 500 }}>
+                                    {user.firstName}
+                                </TableCell>
+                                <TableCell
+                                    sx={{ color: theme.palette.text.secondary }}
+                                >
+                                    {user.email}
+                                </TableCell>
+                                <TableCell>
+                                    <Chip
+                                        label={user.role.toUpperCase()}
+                                        color={getRoleColor(user.role)}
+                                        size="small"
+                                        sx={{ fontWeight: 600 }}
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    {getStatusChip(userStatus)}
+                                </TableCell>
+                                <TableCell
+                                    sx={{ color: theme.palette.text.secondary }}
+                                >
+                                    {user.lastActivity}
+                                </TableCell>
+                                <TableCell
+                                    sx={{ color: theme.palette.text.secondary }}
+                                >
+                                    {user.registeredAt}
+                                </TableCell>
+                                <TableCell>
+                                    <Box sx={{ display: 'flex', gap: 1 }}>
+                                        <Tooltip title="View">
                                             <IconButton
                                                 size="small"
-                                                color="warning"
-                                                disabled={
-                                                    user.status === 'suspended'
-                                                }
+                                                color="info"
                                             >
-                                                <BlockIcon fontSize="small" />
+                                                <VisibilityIcon fontSize="small" />
                                             </IconButton>
-                                        </span>
-                                    </Tooltip>
-                                    <Tooltip title="Delete">
-                                        <IconButton
-                                            size="small"
-                                            color="error"
-                                            onClick={() => deleteUser(user.id)}
+                                        </Tooltip>
+                                        <Tooltip title="Edit">
+                                            <IconButton
+                                                size="small"
+                                                color="primary"
+                                            >
+                                                <EditIcon fontSize="small" />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip
+                                            title={
+                                                user.status === 'suspended'
+                                                    ? 'Already suspended'
+                                                    : 'Suspend'
+                                            }
                                         >
-                                            <DeleteIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
-                                </Box>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                                            <span>
+                                                <IconButton
+                                                    size="small"
+                                                    color="warning"
+                                                    disabled={
+                                                        user.status ===
+                                                        'suspended'
+                                                    }
+                                                >
+                                                    <BlockIcon fontSize="small" />
+                                                </IconButton>
+                                            </span>
+                                        </Tooltip>
+                                        <Tooltip title="Delete">
+                                            <IconButton
+                                                size="small"
+                                                color="error"
+                                            >
+                                                <DeleteIcon fontSize="small" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Box>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>

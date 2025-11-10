@@ -5,29 +5,27 @@ import PeopleIcon from '@mui/icons-material/People'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
+import { User } from '@stores/usersStore'
 
-const UsersKPI = () => {
+const UsersKPI = ({
+    users,
+    isLoading,
+}: {
+    users: User[]
+    isLoading: boolean
+}) => {
     const theme = useTheme()
-    const users = useUsersStore((state) => state.users)
 
     const stats = useMemo(() => {
+        if (isLoading)
+            return { totalUsers: 0, activeUsers: 0, newUsers: 0, adminUsers: 0 }
         const totalUsers = users.length
-        const activeUsers = users.filter((u) => u.status === 'active').length
-        const adminUsers = users.filter((u) => u.role === 'admin').length
-
-        // New users this month
-        const currentMonth = new Date().getMonth()
-        const currentYear = new Date().getFullYear()
-        const newUsers = users.filter((u) => {
-            const regDate = new Date(u.registeredAt)
-            return (
-                regDate.getMonth() === currentMonth &&
-                regDate.getFullYear() === currentYear
-            )
-        }).length
+        const activeUsers = '999' // Placeholder for active users count
+        const adminUsers = users.filter((user) => user.role === 'admin').length
+        const newUsers = 999
 
         return { totalUsers, activeUsers, newUsers, adminUsers }
-    }, [users])
+    }, [isLoading, users])
 
     const cards = [
         {

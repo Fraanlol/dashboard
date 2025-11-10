@@ -6,9 +6,8 @@ import ProductsSearch from './components/ProductsSearch'
 import ProductsFilters from './components/ProductsFilters'
 import ProductsTable from './components/ProductsTable'
 import ProductsPagination from './components/ProductsPagination'
-import { getCategories, getProducts } from '@api/products-api'
+import { getCategories, getProducts, ProductsResponse } from '@api/products-api'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
-import { ProductsResponse } from '@api/products-api'
 import { useProdStore } from '@stores/prodStore'
 import { useMemo } from 'react'
 
@@ -27,7 +26,7 @@ export default function Products() {
         placeholderData: keepPreviousData,
         queryFn: () => {
             const baseParams = {
-                limit: '300',
+                limit: '0',
             }
             if (categoryFilter !== 'all') {
                 return getProducts({
