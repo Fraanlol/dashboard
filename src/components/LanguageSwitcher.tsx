@@ -1,0 +1,75 @@
+import React from 'react'
+import {
+    Select,
+    MenuItem,
+    FormControl,
+    Box,
+    Typography,
+    SelectChangeEvent,
+} from '@mui/material'
+import FlagIcon from '@mui/icons-material/Flag'
+import i18n, { changeLanguage } from '../i18n/config'
+
+const LANGS: { code: string; label: string }[] = [
+    { code: 'en', label: 'EN: United States' },
+    { code: 'es', label: 'ES: Argentina' },
+    { code: 'placeho', label: 'Test' },
+]
+
+const LanguageSwitcher: React.FC = () => {
+    const [lang, setLang] = React.useState<string>(i18n.language || 'en')
+
+    React.useEffect(() => {
+        const handle = () => setLang(i18n.language || 'en')
+        i18n.on('languageChanged', handle)
+        return () => i18n.off('languageChanged', handle)
+    }, [])
+
+    const handleChange = async (event: SelectChangeEvent<string>) => {
+        const newLang = event.target.value
+        setLang(newLang)
+        await changeLanguage(newLang)
+    }
+
+    const current = LANGS.find((l) => l.code === lang) || LANGS[0]
+
+    return (
+        <FormControl size="small" sx={{ minWidth: 110 }}>
+            <Select
+                value={lang}
+                onChange={handleChange}
+                variant="standard"
+                displayEmpty
+                renderValue={() => (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <FlagIcon fontSize="small" />
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {current.label}
+                        </Typography>
+                    </Box>
+                )}
+                sx={{
+                    '& .MuiSelect-select': {
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        pl: 0,
+                    },
+                }}
+            >
+                {LANGS.map((l) => (
+                    <MenuItem
+                        key={l.code}
+                        value={l.code}
+                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                    >
+                        <FlagIcon fontSize="small" />
+                        <Typography variant="body2">{l.label}</Typography>
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+    )
+}
+
+export default LanguageSwitcher

@@ -3,6 +3,8 @@
         "composite": true,
         "module": "ESNext",
         "moduleResolution": "bundler",
+        "target": "ESNext",
+        "lib": ["ESNext"],
         "allowSyntheticDefaultImports": true,
         "types": ["node"]
     },

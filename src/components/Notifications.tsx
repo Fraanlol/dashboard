@@ -24,7 +24,9 @@ export default function Notifications() {
                 slotProps={{
                     clickAwayListener: {
                         onClickAway: (event) => {
-                            ;(event as any).defaultMuiPrevented = true
+                            ;(
+                                event as { defaultMuiPrevented?: boolean }
+                            ).defaultMuiPrevented = true
                         },
                     },
                 }}

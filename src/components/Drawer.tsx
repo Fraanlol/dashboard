@@ -14,13 +14,18 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import PeopleIcon from '@mui/icons-material/People'
+import SettingsIcon from '@mui/icons-material/Settings'
+import Typography from '@mui/material/Typography'
+import { alpha, useMediaQuery } from '@mui/material'
 
 import { useDrawerStore } from '../stores/drawerStore'
 
 import Header from './Header'
-import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
 
 const drawerWidth = 240
 
@@ -52,8 +57,8 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
+    justifyContent: 'space-between',
+    padding: theme.spacing(0, 1.5),
     ...theme.mixins.toolbar,
 }))
 
@@ -117,17 +122,57 @@ export default function MiniDrawer({
 }) {
     const theme = useTheme()
     const { open, toggleDrawer, closeDrawer } = useDrawerStore()
+    const location = useLocation()
+    const drawerRef = React.useRef<HTMLDivElement>(null)
+    const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
+
+    const { t } = useTranslation()
+
+    const menuItems = [
+        { key: 'nav.dashboard', icon: <DashboardIcon />, path: '/' },
+        { key: 'nav.products', icon: <ShoppingCartIcon />, path: '/products' },
+        { key: 'nav.users', icon: <PeopleIcon />, path: '/users' },
+    ]
+
+    const isActive = (path: string) => {
+        if (path === '/') {
+            return location.pathname === '/'
+        }
+        return location.pathname.startsWith(path)
+    }
+
+    // Cerrar drawer al hacer click fuera - SOLO en mobile
+    const handleClickOutside = React.useCallback(
+        (event: MouseEvent) => {
+            if (
+                drawerRef.current &&
+                !drawerRef.current.contains(event.target as Node)
+            ) {
+                closeDrawer()
+            }
+        },
+        [closeDrawer]
+    )
+
+    React.useEffect(() => {
+        if (!isMobile || !open) return
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [open, handleClickOutside, isMobile])
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
                 <Header
-                    title="Dash"
+                    title={t('app.title')}
                     children={
                         <IconButton
                             color="inherit"
-                            aria-label="open drawer"
+                            aria-label={t('header.openDrawer')}
                             onClick={toggleDrawer}
                             edge="start"
                             sx={[
@@ -146,8 +191,37 @@ export default function MiniDrawer({
                 variant="permanent"
                 open={open}
                 className="absolute lg:[position:unset]"
+                ref={drawerRef}
             >
                 <DrawerHeader>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            opacity: open ? 1 : 0,
+                            transition: 'opacity 0.2s',
+                        }}
+                    >
+                        <DashboardIcon
+                            sx={{
+                                fontSize: 28,
+                                color: 'primary.main',
+                            }}
+                        />
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                fontWeight: 700,
+                                background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                                backgroundClip: 'text',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                            }}
+                        >
+                            {t('nav.dashboard')}
+                        </Typography>
+                    </Box>
                     <IconButton onClick={closeDrawer}>
                         {theme.direction === 'rtl' ? (
                             <ChevronRightIcon />
@@ -156,145 +230,138 @@ export default function MiniDrawer({
                         )}
                     </IconButton>
                 </DrawerHeader>
-                <Divider
-                    textAlign="left"
-                    sx={[
-                        {
-                            span: {
-                                fontSize: '10px',
-                                fontWeight: 'bold',
-                                textTransform: 'uppercase',
-                                opacity: 0.6,
-                            },
-                        },
-                        open
-                            ? {
-                                  span: {
-                                      display: 'block',
-                                  },
-                              }
-                            : {
-                                  span: { display: 'none' },
-                              },
-                    ]}
-                >
-                    MAIN
-                </Divider>
+                <Divider sx={{ mb: 1 }} />
                 <List>
-                    {['Dashboard', 'Products', 'Users'].map((text, index) => (
-                        <ListItem
-                            key={text}
-                            disablePadding
-                            sx={{ display: 'block' }}
-                        >
-                            <Link
-                                onClick={closeDrawer}
-                                to={
-                                    text === 'Dashboard'
-                                        ? `/`
-                                        : `/${text.toLowerCase()}`
-                                }
-                                style={{
-                                    textDecoration: 'none',
-                                    color: 'inherit',
-                                }}
+                    {menuItems.map((item) => {
+                        const active = isActive(item.path)
+                        return (
+                            <ListItem
+                                key={item.key}
+                                disablePadding
+                                sx={{ display: 'block', px: 1 }}
                             >
-                                <ListItemButton
-                                    sx={[
-                                        {
-                                            minHeight: 48,
-                                            px: 2.5,
-                                        },
-                                        open
-                                            ? {
-                                                  justifyContent: 'initial',
-                                              }
-                                            : {
-                                                  justifyContent: 'center',
-                                              },
-                                    ]}
+                                <Link
+                                    onClick={closeDrawer}
+                                    to={item.path}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: 'inherit',
+                                    }}
                                 >
-                                    <ListItemIcon
+                                    <ListItemButton
                                         sx={[
                                             {
-                                                minWidth: 0,
-                                                justifyContent: 'center',
+                                                minHeight: 48,
+                                                borderRadius: 2,
+                                                mb: 0.5,
+                                                transition: 'all 0.2s',
+                                                position: 'relative',
+                                                overflow: 'hidden',
                                             },
                                             open
                                                 ? {
-                                                      mr: 3,
+                                                      justifyContent: 'initial',
+                                                      px: 2.5,
                                                   }
                                                 : {
-                                                      mr: 'auto',
+                                                      justifyContent: 'center',
+                                                      px: 2,
                                                   },
+                                            active && {
+                                                bgcolor: alpha(
+                                                    theme.palette.primary.main,
+                                                    0.12
+                                                ),
+                                                color: 'primary.main',
+                                                fontWeight: 600,
+                                                '&::before': {
+                                                    content: '""',
+                                                    position: 'absolute',
+                                                    left: 0,
+                                                    top: '20%',
+                                                    height: '60%',
+                                                    width: 3,
+                                                    bgcolor: 'primary.main',
+                                                    borderRadius: '0 4px 4px 0',
+                                                },
+                                                '&:hover': {
+                                                    bgcolor: alpha(
+                                                        theme.palette.primary
+                                                            .main,
+                                                        0.18
+                                                    ),
+                                                },
+                                            },
                                         ]}
                                     >
-                                        {index % 2 === 0 ? (
-                                            <InboxIcon />
-                                        ) : (
-                                            <MailIcon />
-                                        )}
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={text}
-                                        sx={[
-                                            open
-                                                ? {
-                                                      opacity: 1,
-                                                  }
-                                                : {
-                                                      opacity: 0,
-                                                  },
-                                        ]}
-                                    />
-                                </ListItemButton>
-                            </Link>
-                        </ListItem>
-                    ))}
+                                        <ListItemIcon
+                                            sx={[
+                                                {
+                                                    minWidth: 0,
+                                                    justifyContent: 'center',
+                                                    color: active
+                                                        ? 'primary.main'
+                                                        : 'inherit',
+                                                },
+                                                open
+                                                    ? {
+                                                          mr: 2.5,
+                                                      }
+                                                    : {
+                                                          mr: 'auto',
+                                                      },
+                                            ]}
+                                        >
+                                            {item.icon}
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={t(item.key)}
+                                            primaryTypographyProps={{
+                                                fontWeight: active ? 600 : 500,
+                                                fontSize: '0.95rem',
+                                            }}
+                                            sx={[
+                                                open
+                                                    ? {
+                                                          opacity: 1,
+                                                      }
+                                                    : {
+                                                          opacity: 0,
+                                                      },
+                                            ]}
+                                        />
+                                    </ListItemButton>
+                                </Link>
+                            </ListItem>
+                        )
+                    })}
                 </List>
-                <Divider
-                    textAlign="left"
-                    sx={[
-                        {
-                            span: {
-                                fontSize: '10px',
-                                fontWeight: 'bold',
-                                textTransform: 'uppercase',
-                                opacity: 0.6,
-                            },
-                        },
-                        open
-                            ? {
-                                  span: {
-                                      display: 'block',
-                                  },
-                              }
-                            : {
-                                  span: { display: 'none' },
-                              },
-                    ]}
-                >
-                    TEST
-                </Divider>
+                <Divider sx={{ my: 1 }} />
                 <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem
-                            key={text}
-                            disablePadding
-                            sx={{ display: 'block' }}
+                    <ListItem disablePadding sx={{ display: 'block', px: 1 }}>
+                        <Link
+                            onClick={closeDrawer}
+                            to="/settings"
+                            style={{
+                                textDecoration: 'none',
+                                color: 'inherit',
+                            }}
                         >
                             <ListItemButton
                                 sx={[
                                     {
                                         minHeight: 48,
-                                        px: 2.5,
+                                        borderRadius: 2,
+                                        transition: 'all 0.2s',
                                     },
                                     open
                                         ? {
                                               justifyContent: 'initial',
+                                              px: 2.5,
                                           }
                                         : {
                                               justifyContent: 'center',
+                                              px: 2,
                                           },
                                 ]}
                             >
@@ -306,21 +373,21 @@ export default function MiniDrawer({
                                         },
                                         open
                                             ? {
-                                                  mr: 3,
+                                                  mr: 2.5,
                                               }
                                             : {
                                                   mr: 'auto',
                                               },
                                     ]}
                                 >
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
+                                    <SettingsIcon />
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary={text}
+                                    primary={t('nav.settings')}
+                                    primaryTypographyProps={{
+                                        fontWeight: 500,
+                                        fontSize: '0.95rem',
+                                    }}
                                     sx={[
                                         open
                                             ? {
@@ -332,8 +399,8 @@ export default function MiniDrawer({
                                     ]}
                                 />
                             </ListItemButton>
-                        </ListItem>
-                    ))}
+                        </Link>
+                    </ListItem>
                 </List>
             </Drawer>
             <Box

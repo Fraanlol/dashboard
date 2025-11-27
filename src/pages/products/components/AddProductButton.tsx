@@ -1,42 +1,63 @@
-import { Box, Fab, useMediaQuery, useTheme } from '@mui/material'
-import { AddCircle, AddCircleOutline, Add } from '@mui/icons-material'
-import { useNotificationStore } from '@stores/notificationStore'
+import DownloadIcon from '@mui/icons-material/Download'
+import AddIcon from '@mui/icons-material/Add'
+import SpeedDial from '@mui/material/SpeedDial'
+import SpeedDialAction from '@mui/material/SpeedDialAction'
+import SpeedDialIcon from '@mui/material/SpeedDialIcon'
+import { useMediaQuery, useTheme } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { Product } from '@stores/prodStore'
+import { useProductModalStore } from '@stores/productModalStore'
+import {
+    exportToCSV,
+    formatProductsForExport,
+} from '../../../utils/exportToCSV'
 
-export default function AddProductButton() {
+interface AddProductButtonProps {
+    products: Product[]
+    isLoading: boolean
+}
+
+export default function AddProductButton({
+    products,
+    isLoading,
+}: AddProductButtonProps) {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-    const add = useNotificationStore((state) => state.show)
+    const { t } = useTranslation()
+    const openCreateModal = useProductModalStore(
+        (state) => state.openCreateModal
+    )
 
-    if (isMobile) {
-        return (
-            <Fab
-                onClick={() => add('Añadido correctamente', 'success')}
-                color="primary"
-                aria-label="add product"
-                sx={{
-                    position: 'fixed',
-                    bottom: 16,
-                    right: 16,
-                }}
-            >
-                <Add />
-            </Fab>
-        )
+    if (!isMobile) return null
+
+    const handleExport = () => {
+        if (products.length === 0 || isLoading) {
+            alert(t('products.export.noProducts'))
+            return
+        }
+
+        const formattedData = formatProductsForExport(products)
+        exportToCSV(formattedData, 'products')
     }
 
     return (
-        <Box onClick={() => add('Añadido correctamente', 'success')}>
-            {theme.palette.mode === 'dark' ? (
-                <AddCircleOutline
-                    color="primary"
-                    sx={{ fontSize: 40, cursor: 'pointer' }}
-                />
-            ) : (
-                <AddCircle
-                    color="primary"
-                    sx={{ fontSize: 40, cursor: 'pointer' }}
-                />
-            )}
-        </Box>
+        <SpeedDial
+            ariaLabel={t('products.actions.ariaLabel')}
+            icon={<SpeedDialIcon openIcon={<AddIcon />} />}
+            FabProps={{ color: 'primary' }}
+            sx={{ position: 'fixed', bottom: 24, right: 24 }}
+        >
+            <SpeedDialAction
+                icon={<AddIcon />}
+                tooltipTitle={t('products.actions.addProduct')}
+                onClick={openCreateModal}
+            />
+            <SpeedDialAction
+                icon={<DownloadIcon />}
+                tooltipTitle={t('products.actions.exportCSV')}
+                onClick={handleExport}
+                FabProps={{ disabled: isLoading || products.length === 0 }}
+            />
+        </SpeedDial>
     )
 }

@@ -1,137 +1,154 @@
-import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
-import SellIcon from '@mui/icons-material/Sell'
 import Typography from '@mui/material/Typography'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import TrendingDownIcon from '@mui/icons-material/TrendingDown'
+import React from 'react'
 
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: '#fff',
-    ...theme.typography.body2,
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color:
-        (theme.vars ?? theme).palette.text.cards ??
-        (theme.vars ?? theme).palette.text.primary,
-    ...theme.applyStyles('dark', {
-        backgroundColor: '#1A2027',
-    }),
-}))
-export default function KPICards() {
-    let cards = [
-        { title: 'Revenue', value: '1,234' },
-        { title: 'Users', value: '567' },
-        { title: 'Products', value: '89' },
-        { title: 'Orders', value: '2.5%' },
-    ]
+interface KPICardData {
+    title: string
+    value: string
+    icon: React.ReactNode
+    change: string
+    changeLabel: string
+}
+
+interface KPICardsProps {
+    cards: KPICardData[]
+}
+
+export default function KPICards({ cards }: KPICardsProps) {
     return (
         <Box sx={{ flexGrow: 1, mb: 4 }}>
-            <Grid container spacing={2}>
-                {cards.map((card) => (
-                    <Grid
-                        key={card.title}
-                        size={{ xs: 12, sm: 6, md: 6, lg: 3 }}
-                    >
-                        <Item
-                            sx={{
-                                backgroundColor: 'primary.light',
-                                position: 'relative',
-                            }}
+            <Grid container spacing={3}>
+                {cards.map((card, index) => {
+                    const changeValue = parseFloat(card.change)
+                    const isPositive = changeValue >= 0
+                    const changeColor = isPositive
+                        ? 'success.main'
+                        : 'error.main'
+                    const TrendIcon = isPositive
+                        ? TrendingUpIcon
+                        : TrendingDownIcon
+
+                    return (
+                        <Grid
+                            key={`kpi-card-${index}`}
+                            size={{ xs: 12, sm: 6, md: 6, lg: 3 }}
                         >
-                            <Box
+                            <Paper
+                                elevation={0}
                                 sx={{
-                                    position: 'absolute',
-                                    top: 8,
-                                    right: 0,
-                                    backgroundColor: 'secondary.main',
-                                    color: 'secondary.contrastText',
-                                    px: 1,
-                                    py: 0.5,
-                                    fontSize: '0.75rem',
-                                    fontWeight: 'bold',
-                                    width: 80,
-                                    clipPath:
-                                        'polygon(8px 0, 100% 0, 100% 100%, 8px 100%, 0 50%)',
-                                    '&::before': {
-                                        content: '""',
-                                        position: 'absolute',
-                                        right: -4,
-                                        top: '50%',
-                                        transform: 'translateY(-50%)',
-                                        width: 0,
-                                        height: 0,
-                                        borderTop: '12px solid transparent',
-                                        borderBottom: '12px solid transparent',
-                                        borderLeft: '8px solid',
-                                        borderLeftColor: 'secondary.main',
+                                    p: 3,
+                                    height: '100%',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                    transition: 'all 0.2s ease-in-out',
+                                    '&:hover': {
+                                        borderColor: 'primary.main',
+                                        boxShadow:
+                                            '0 4px 12px 0 rgb(0 0 0 / 0.05)',
                                     },
                                 }}
                             >
-                                +15%
-                            </Box>
-                            {/* Inside card */}
-                            <Grid
-                                container
-                                flexDirection="row"
-                                className="mb-4"
-                            >
-                                <Item
-                                    elevation={0}
-                                    className="p-2 mr-4"
+                                {/* Header with Icon and Change */}
+                                <Box
                                     sx={{
-                                        backgroundColor:
-                                            'rgb(255 255 255 / 15%)',
-                                        width: 58,
-                                        height: 58,
                                         display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'flex-start',
+                                        mb: 2,
                                     }}
                                 >
-                                    <SellIcon
-                                        className="text-white"
-                                        focusable={false}
-                                        tabIndex={-1}
-                                        sx={{ outline: 'none' }}
-                                    />
-                                </Item>
-                                <Grid
-                                    container
-                                    alignItems="flex-start"
-                                    flexDirection="column"
-                                >
-                                    <h3 className="uppercase font-bold text-md mb-1">
-                                        {card.title}
-                                    </h3>
-                                    <Typography
-                                        component="p"
-                                        sx={{ color: 'primary.contrastText' }}
-                                        className="font-bold text-2xl"
+                                    <Box
+                                        sx={{
+                                            p: 1,
+                                            borderRadius: 2,
+                                            backgroundColor: 'action.hover',
+                                            display: 'flex',
+                                        }}
                                     >
-                                        {card.value}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid
-                                container
-                                justifyContent="space-between"
-                                sx={{ color: 'primary.contrastText' }}
-                            >
+                                        {card.icon}
+                                    </Box>
+
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 0.5,
+                                            px: 1,
+                                            py: 0.5,
+                                            borderRadius: 1,
+                                            backgroundColor: isPositive
+                                                ? 'rgba(16, 185, 129, 0.1)'
+                                                : 'rgba(220, 38, 38, 0.1)',
+                                        }}
+                                    >
+                                        <TrendIcon
+                                            sx={{
+                                                fontSize: 16,
+                                                color: changeColor,
+                                            }}
+                                        />
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                fontWeight: 600,
+                                                color: changeColor,
+                                                fontSize: '0.8125rem',
+                                            }}
+                                        >
+                                            {card.change}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+
+                                {/* Title */}
                                 <Typography
+                                    variant="body2"
                                     sx={{
-                                        color: 'text.cards',
-                                        fontSize: 'sm.fontSize',
+                                        color: 'text.secondary',
+                                        mb: 0.5,
+                                        fontSize: '0.875rem',
+                                        fontWeight: 500,
                                     }}
-                                    className=" font-bold"
                                 >
-                                    Compared to last month
+                                    {card.title}
                                 </Typography>
-                                <p>{'>'}</p>
-                            </Grid>
-                        </Item>
-                    </Grid>
-                ))}
+
+                                {/* Value */}
+                                <Typography
+                                    variant="h4"
+                                    sx={{
+                                        fontWeight: 700,
+                                        color: 'text.primary',
+                                        fontSize: '2rem',
+                                        letterSpacing: '-0.02em',
+                                    }}
+                                >
+                                    {card.value}
+                                </Typography>
+
+                                {/* Bottom Label */}
+                                <Typography
+                                    variant="caption"
+                                    sx={{
+                                        color: 'text.secondary',
+                                        mt: 1,
+                                        fontSize: '0.75rem',
+                                    }}
+                                >
+                                    {card.changeLabel}
+                                </Typography>
+                            </Paper>
+                        </Grid>
+                    )
+                })}
             </Grid>
         </Box>
     )

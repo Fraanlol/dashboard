@@ -8,8 +8,8 @@ import {
     Paper,
     Grid,
 } from '@mui/material'
-import {useProdStore} from '@stores/prodStore'
-
+import { useProdStore } from '@stores/prodStore'
+import { useTranslation } from 'react-i18next'
 
 export default function ProductsPagination({
     totalItems,
@@ -20,6 +20,7 @@ export default function ProductsPagination({
     page: number
     rowsPerPage: number
 }) {
+    const { t } = useTranslation()
 
     // Calculate total filtered items
 
@@ -48,13 +49,15 @@ export default function ProductsPagination({
                         }}
                     >
                         <Typography variant="body2" color="text.secondary">
-                            Rows per page:
+                            {t('products.pagination.rowsPerPage')}
                         </Typography>
                         <FormControl size="small">
                             <Select
                                 value={rowsPerPage}
                                 sx={{ minWidth: 70 }}
-                                onChange={(e) => setRowsPerPage(e.target.value as number)}
+                                onChange={(e) =>
+                                    setRowsPerPage(e.target.value as number)
+                                }
                             >
                                 <MenuItem value={10}>10</MenuItem>
                                 <MenuItem value={25}>25</MenuItem>
@@ -63,7 +66,8 @@ export default function ProductsPagination({
                             </Select>
                         </FormControl>
                         <Typography variant="body2" color="text.secondary">
-                            {startItem}-{endItem} of {totalItems}
+                            {startItem}-{endItem} {t('products.pagination.of')}{' '}
+                            {totalItems}
                         </Typography>
                     </Box>
                 </Grid>
@@ -78,7 +82,7 @@ export default function ProductsPagination({
                             count={totalPages}
                             siblingCount={0}
                             boundaryCount={1}
-                            size='small'
+                            size="small"
                             page={page}
                             onChange={(_, value) => setCurrentPage(value)}
                             color="primary"

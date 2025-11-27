@@ -24,6 +24,8 @@
             "@styles/*": ["src/styles/*"],
             "@stores/*": ["src/stores/*"],
             "@api/*": ["src/api/*"],
+            "@lib/*": ["src/lib/*"],
+            "@hooks/*": ["src/hooks/*"]
         }
     },
     "include": ["src"],

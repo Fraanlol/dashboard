@@ -10,7 +10,9 @@ import {
     Chip,
     CircularProgress,
     Alert,
+    Button,
 } from '@mui/material'
+import RefreshIcon from '@mui/icons-material/Refresh'
 import { useTheme } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { getProducts } from '@api/products-api'
@@ -18,7 +20,7 @@ import { Product } from '@stores/prodStore'
 import { ProductsResponse } from '@api/products-api'
 
 export default function TopProducts() {
-    const { data, isLoading, isError, error } = useQuery<ProductsResponse>({
+    const { data, isLoading, isError, refetch } = useQuery<ProductsResponse>({
         queryKey: ['top-products'],
         queryFn: () =>
             getProducts({ limit: '5', sortBy: 'rating', order: 'desc' }),
@@ -43,9 +45,23 @@ export default function TopProducts() {
 
     if (isError) {
         return (
-            <Alert severity="error" sx={{ m: 2 }}>
-                Error loading products
-            </Alert>
+            <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Alert
+                    severity="error"
+                    action={
+                        <Button
+                            color="inherit"
+                            size="small"
+                            startIcon={<RefreshIcon />}
+                            onClick={() => refetch()}
+                        >
+                            Retry
+                        </Button>
+                    }
+                >
+                    Failed to load data. Please try again.
+                </Alert>
+            </Box>
         )
     }
 
@@ -67,7 +83,7 @@ export default function TopProducts() {
                         key={id}
                         sx={{
                             px: 0,
-                            py: 2,
+                            py: { xs: 1.5, md: 2 },
                             borderBottom:
                                 index < products.length - 1
                                     ? `1px solid ${theme.palette.divider}`
@@ -80,9 +96,9 @@ export default function TopProducts() {
                                 src={thumbnail}
                                 alt={title}
                                 sx={{
-                                    width: 60,
-                                    height: 60,
-                                    mr: 2,
+                                    width: { xs: 48, md: 60 },
+                                    height: { xs: 48, md: 60 },
+                                    mr: { xs: 1.5, md: 2 },
                                 }}
                             />
                         </ListItemAvatar>
@@ -94,15 +110,21 @@ export default function TopProducts() {
                                     sx={{
                                         display: 'flex',
                                         alignItems: 'center',
-                                        gap: 1,
+                                        gap: { xs: 0.5, md: 1 },
                                         mb: 0.5,
+                                        flexWrap: { xs: 'wrap', md: 'nowrap' },
                                     }}
                                 >
                                     <Typography
-                                        variant="body1"
+                                        variant="body2"
                                         sx={{
                                             fontWeight: 500,
                                             color: 'text.primary',
+                                            fontSize: {
+                                                xs: '0.875rem',
+                                                md: '1rem',
+                                            },
+                                            lineHeight: 1.3,
                                         }}
                                     >
                                         {title}
@@ -111,10 +133,16 @@ export default function TopProducts() {
                                         label={category}
                                         size="small"
                                         sx={{
-                                            height: 20,
-                                            fontSize: '0.75rem',
+                                            height: { xs: 18, md: 20 },
+                                            fontSize: {
+                                                xs: '0.65rem',
+                                                md: '0.75rem',
+                                            },
                                             bgcolor: theme.palette.action.hover,
                                             color: 'text.secondary',
+                                            '& .MuiChip-label': {
+                                                px: { xs: 0.75, md: 1 },
+                                            },
                                         }}
                                     />
                                 </Box>
@@ -124,9 +152,17 @@ export default function TopProducts() {
                                     component="span"
                                     sx={{
                                         display: 'flex',
-                                        alignItems: 'center',
+                                        alignItems: {
+                                            xs: 'flex-start',
+                                            md: 'center',
+                                        },
                                         justifyContent: 'space-between',
                                         mt: 0.5,
+                                        gap: 1,
+                                        flexDirection: {
+                                            xs: 'column',
+                                            sm: 'row',
+                                        },
                                     }}
                                 >
                                     <Typography
@@ -135,6 +171,10 @@ export default function TopProducts() {
                                         sx={{
                                             fontWeight: 600,
                                             color: 'primary.main',
+                                            fontSize: {
+                                                xs: '1rem',
+                                                md: '1.25rem',
+                                            },
                                         }}
                                     >
                                         ${price.toFixed(2)}
@@ -152,13 +192,22 @@ export default function TopProducts() {
                                             precision={0.1}
                                             size="small"
                                             readOnly
+                                            sx={{
+                                                fontSize: {
+                                                    xs: '1rem',
+                                                    md: '1.25rem',
+                                                },
+                                            }}
                                         />
                                         <Typography
                                             component="span"
                                             variant="body2"
                                             sx={{
                                                 color: 'text.secondary',
-                                                fontSize: '0.875rem',
+                                                fontSize: {
+                                                    xs: '0.75rem',
+                                                    md: '0.875rem',
+                                                },
                                             }}
                                         >
                                             {rating}

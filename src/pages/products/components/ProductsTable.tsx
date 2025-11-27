@@ -7,10 +7,12 @@ export default function ProductsTable({
     products,
     isLoading,
     isError,
+    refetch,
 }: {
     products: Product[]
     isLoading: boolean
     isError: boolean
+    refetch: () => void
 }) {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
@@ -21,6 +23,7 @@ export default function ProductsTable({
                 products={products}
                 isLoading={isLoading}
                 isError={isError}
+                refetch={refetch}
             />
         )
     }
@@ -30,6 +33,8 @@ export default function ProductsTable({
             products={products}
             isLoading={isLoading}
             isError={isError}
+            refetch={refetch}
         />
     )
 }
+

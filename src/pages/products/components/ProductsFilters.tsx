@@ -13,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import ClearIcon from '@mui/icons-material/Clear'
 import { useProdStore } from '@stores/prodStore'
 import { use } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export default function ProductsFilters({
     categories,
@@ -38,19 +39,24 @@ export default function ProductsFilters({
         filters.priceRange !== 'all' ||
         sortField !== null
 
+    const { t } = useTranslation()
+
     const STOCK_FILTERS = [
-        { label: 'All Stock', value: 'all' },
-        { label: 'In Stock', value: 'in-stock' },
-        { label: 'Low Stock', value: 'low-stock' },
-        { label: 'Out of Stock', value: 'out-of-stock' },
+        { label: t('products.filters.stock.all'), value: 'all' },
+        { label: t('products.filters.stock.inStock'), value: 'in-stock' },
+        { label: t('products.filters.stock.lowStock'), value: 'low-stock' },
+        {
+            label: t('products.filters.stock.outOfStock'),
+            value: 'out-of-stock',
+        },
     ]
 
     const PRICE_FILTERS = [
-        { label: 'All Prices', value: 'all' },
-        { label: 'Under $50', value: 'under-50' },
-        { label: '$50 - $100', value: '50-100' },
-        { label: '$100 - $500', value: '100-500' },
-        { label: 'Over $500', value: 'over-500' },
+        { label: t('products.filters.price.all'), value: 'all' },
+        { label: t('products.filters.price.under50'), value: 'under-50' },
+        { label: t('products.filters.price.50to100'), value: '50-100' },
+        { label: t('products.filters.price.100to500'), value: '100-500' },
+        { label: t('products.filters.price.over500'), value: 'over-500' },
     ]
 
     return (
@@ -61,7 +67,7 @@ export default function ProductsFilters({
                     variant="body2"
                     sx={{ mb: 1, fontWeight: 600, color: 'text.secondary' }}
                 >
-                    Categories
+                    {t('products.filters.categories')}
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     {/* Icon decorativo */}
@@ -69,17 +75,19 @@ export default function ProductsFilters({
 
                     {/* Select de categorías */}
                     <FormControl size="small" sx={{ minWidth: 220 }}>
-                        <InputLabel>Filter by Category</InputLabel>
+                        <InputLabel>
+                            {t('products.filters.filterByCategory')}
+                        </InputLabel>
                         <Select
                             value={currentCategory || ''}
-                            label="Filter by Category"
+                            label={t('products.filters.filterByCategory')}
                             onChange={(e) =>
                                 setCurrentCategory(e.target.value || 'all')
                             }
                             sx={{ bgcolor: 'white' }}
                         >
                             <MenuItem value="all">
-                                <em>All Categories</em>
+                                <em>{t('products.filters.allCategories')}</em>
                             </MenuItem>
                             {categories?.map((cat) => (
                                 <MenuItem key={cat} value={cat}>
@@ -109,7 +117,7 @@ export default function ProductsFilters({
                     variant="body2"
                     sx={{ mb: 1, fontWeight: 600, color: 'text.secondary' }}
                 >
-                    Stock Status
+                    {t('products.filters.stock.title')}
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     {STOCK_FILTERS.map((filter) => (
@@ -138,7 +146,7 @@ export default function ProductsFilters({
                     variant="body2"
                     sx={{ mb: 1, fontWeight: 600, color: 'text.secondary' }}
                 >
-                    Price Range
+                    {t('products.filters.price.title')}
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     {PRICE_FILTERS.map((filter) => (
@@ -171,7 +179,7 @@ export default function ProductsFilters({
                         size="small"
                         sx={{ borderRadius: 2 }}
                     >
-                        Clear All Filters
+                        {t('products.filters.clearAll')}
                     </Button>
                 </Box>
             )}

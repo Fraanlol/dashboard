@@ -1,0 +1,398 @@
+{
+    "theme": {
+        "controls": {
+            "light": "Claro",
+            "dark": "Oscuro",
+            "system": "Sistema",
+            "title": "Tema",
+            "currentMode": "Modo actual",
+            "useSystem": "Usar configuración del sistema",
+            "toggle": "Alternar tema",
+            "saved": "Preferencia guardada"
+        }
+    },
+    "app": { "searchPlaceholder": "Buscar...", "title": "Dashboard Pro" },
+    "auth": {
+        "title": "Bienvenido",
+        "subtitle": "Inicia sesión en tu cuenta del panel",
+        "labels": { "email": "Correo", "password": "Contraseña" },
+        "placeholders": { "email": "demo@ejemplo.com" },
+        "button": { "signIn": "Iniciar sesión" },
+        "welcome": "¡Bienvenido de nuevo!",
+        "errors": {
+            "fillFields": "Por favor completa todos los campos",
+            "invalidCredentials": "Correo o contraseña inválidos"
+        },
+        "register": {
+            "title": "Crear cuenta",
+            "subtitle": "Regístrate para comenzar con tu panel",
+            "confirmPassword": "Confirmar contraseña",
+            "passwordHelper": "Debe tener al menos 6 caracteres",
+            "button": "Crear cuenta",
+            "success": "¡Cuenta creada con éxito!",
+            "error": "Error al crear la cuenta",
+            "errors": {
+                "passwordLength": "La contraseña debe tener al menos 6 caracteres",
+                "passwordMismatch": "Las contraseñas no coinciden"
+            }
+        }
+    },
+    "header": {
+        "searchButton": "Buscar",
+        "searchShortcut": "Ctrl+K",
+        "notifications": "Notificaciones",
+        "themeSettings": "Ajustes de tema",
+        "account": "Cuenta"
+    },
+    "nav": {
+        "dashboard": "Tablero",
+        "products": "Productos",
+        "users": "Usuarios",
+        "settings": "Ajustes"
+    },
+    "userMenu": {
+        "profile": "Perfil",
+        "logout": "Cerrar sesión",
+        "logoutSuccess": "Sesión cerrada correctamente",
+        "logoutError": "Error al cerrar sesión"
+    },
+    "dashboard": {
+        "title": "Tablero",
+        "subtitle": "Bienvenido al panel de control.",
+        "cards": {
+            "monthlyIncome": "Ingresos mensuales",
+            "incomeSource": "Fuente de ingresos",
+            "topProducts": "Productos principales",
+            "userActivity": "Actividad de usuarios"
+        },
+        "kpi": {
+            "revenue": "Ingresos",
+            "users": "Usuarios",
+            "orders": "Pedidos",
+            "products": "Productos",
+            "conversion": "Conversión",
+            "pageViews": "Visitas",
+            "vsLastMonth": "vs mes anterior"
+        },
+        "donut": {
+            "revenue": "Ingresos",
+            "users": "Usuarios",
+            "orders": "Pedidos",
+            "products": "Productos"
+        },
+        "days": {
+            "monShort": "Lun",
+            "tueShort": "Mar",
+            "wedShort": "Mié",
+            "thuShort": "Jue",
+            "friShort": "Vie",
+            "satShort": "Sáb",
+            "sunShort": "Dom"
+        },
+        "bars": {
+            "months": {
+                "jan": "Ene",
+                "feb": "Feb",
+                "mar": "Mar",
+                "apr": "Abr",
+                "may": "May",
+                "jun": "Jun",
+                "jul": "Jul",
+                "aug": "Ago",
+                "sep": "Sep",
+                "oct": "Oct",
+                "nov": "Nov",
+                "dec": "Dic"
+            },
+            "series": {
+                "previousYear": "Año anterior",
+                "currentYear": "Año actual",
+                "previous": "Año anterior",
+                "current": "Año actual"
+            },
+            "vsPreviousYear": "vs año anterior"
+        },
+        "chart": {
+            "activeUsers": "Usuarios activos",
+            "newUsers": "Usuarios nuevos"
+        },
+        "recentTransactions": {
+            "title": "Transacciones recientes",
+            "date": "Fecha",
+            "user": "Usuario",
+            "amount": "Cantidad",
+            "status": "Estado",
+            "statusValues": {
+                "approved": "Aprobado",
+                "pending": "Pendiente",
+                "declined": "Rechazado"
+            }
+        },
+        "activity": {
+            "title": "Actividad reciente",
+            "subtitle": "Últimos eventos y actualizaciones",
+            "time1": "09:15 AM",
+            "event1": "Nuevo usuario registrado: Ana Gómez",
+            "time2": "11:30 AM",
+            "event2": "Pedido #12345 completado",
+            "time3": "01:45 PM",
+            "event3": "Producto 'Camiseta Azul' agregado al inventario",
+            "time4": "03:20 PM",
+            "event4": "Reseña de producto 'Zapatos Running' aprobada",
+            "time5": "05:00 PM",
+            "event5": "Contraseña cambiada para el usuario Mike",
+            "loadMore": "Cargar más"
+        }
+    },
+    "dialog": {
+        "deleteProduct": {
+            "title": "Eliminar producto",
+            "warning": "¡Esta acción no se puede deshacer!",
+            "pre": "¿Estás seguro de que deseas eliminar",
+            "post": "? Esto eliminará el producto de tu inventario.",
+            "confirm": "Eliminar producto"
+        },
+        "actions": { "cancel": "Cancelar", "close": "Cerrar" },
+        "deleteUser": {
+            "title": "Eliminar usuario",
+            "warning": "¡Esta acción no se puede deshacer!",
+            "confirmText": "¿Estás seguro de que deseas eliminar este usuario?",
+            "userName": "Nombre de usuario:",
+            "confirm": "Eliminar"
+        }
+    },
+    "userModal": {
+        "title": { "create": "Crear Nuevo Usuario", "edit": "Editar Usuario" },
+        "label": {
+            "firstName": "Nombre",
+            "lastName": "Apellido",
+            "email": "Correo electrónico",
+            "age": "Edad",
+            "gender": "Género",
+            "role": "Rol"
+        },
+        "options": {
+            "gender": { "male": "Masculino", "female": "Femenino" },
+            "role": {
+                "user": "Usuario",
+                "admin": "Administrador",
+                "moderator": "Moderador"
+            }
+        },
+        "validation": {
+            "firstName": "El nombre es obligatorio",
+            "lastName": "El apellido es obligatorio",
+            "emailRequired": "El correo es obligatorio",
+            "emailInvalid": "Formato de correo inválido",
+            "ageRange": "La edad debe estar entre 1 y 120"
+        },
+        "buttons": {
+            "cancel": "Cancelar",
+            "create": "Crear",
+            "update": "Actualizar"
+        }
+    },
+    "products": {
+        "title": "Productos",
+        "subtitle": "Administra tu inventario de productos",
+        "searchPlaceholder": "Buscar productos...",
+        "addProduct": "Agregar producto",
+        "actions": {
+            "addProduct": "Agregar producto",
+            "ariaLabel": "Acciones de productos",
+            "exportCSV": "Exportar CSV"
+        },
+        "export": {
+            "button": "Exportar CSV",
+            "noProducts": "No hay productos para exportar"
+        },
+        "pagination": {
+            "rowsPerPage": "Filas por página:",
+            "of": "de"
+        },
+        "filters": {
+            "categories": "Categorías",
+            "searchPlaceholder": "Buscar productos...",
+            "filterByCategory": "Filtrar por categoría",
+            "allCategories": "Todas las categorías",
+            "title": "Filtros",
+            "active": "Activo",
+            "inventoryFilters": "Filtros de inventario",
+            "shapeCatalog": "Dar forma a la vista del catálogo",
+            "description": "Combina categoría, stock y rangos de precio para enfocarte en lo que necesita atención.",
+            "allFilters": "Todos los filtros",
+            "clearAll": "Borrar todos los filtros",
+            "tokenCategory": "Categoría: {{category}}",
+            "tokenStock": "Stock: {{stock}}",
+            "tokenPrice": "Precio: {{price}}",
+            "stock": {
+                "title": "Estado de stock",
+                "all": "Todo el stock",
+                "inStock": "En stock",
+                "lowStock": "Bajo stock",
+                "outOfStock": "Agotado"
+            },
+            "price": {
+                "title": "Rango de precios",
+                "all": "Todos los precios",
+                "under50": "Menos de $50",
+                "50to100": "$50 - $100",
+                "100to500": "$100 - $500",
+                "over500": "Más de $500"
+            }
+        },
+        "kpi": {
+            "totalProducts": "Total de productos",
+            "totalProductsSubtitle": "SKUs listados activamente",
+            "totalProductsChange": "+5% vs mes anterior",
+            "catalogValue": "Valor del catálogo",
+            "catalogValueSubtitle": "Valoración en stock",
+            "catalogValueChange": "+8% vs mes anterior",
+            "categories": "Categorías",
+            "categoriesDetail": "+2 nuevas colecciones",
+            "lowStockAlerts": "Alertas de bajo stock",
+            "lowStockDetail": "Necesita reposición",
+            "newArrivals": "Nuevas llegadas",
+            "newArrivalsDetail": "Este trimestre",
+            "topRatedLine": "Línea más valorada",
+            "topRatedDetail": "Kit de piel Aloe",
+            "inventoryHealth": "Salud del inventario",
+            "readyToShip": "{{percent}}% listo para enviar",
+            "shippedThisWeek": "Enviado esta semana",
+            "shippedCount": "{{count}} unidades",
+            "backorderRisk": "Riesgo de pedido pendiente",
+            "backorderCount": "{{count}} artículos",
+            "avgFulfillment": "Cumplimiento promedio",
+            "avgFulfillmentDays": "{{days}} días",
+            "launchSpotlight": "Destacado de lanzamiento",
+            "urbanCommuter": "Viajero urbano",
+            "liftSinceRollout": "+34% aumento desde el lanzamiento",
+            "sellThrough": "Venta total",
+            "sellThroughValue": "{{value}}",
+            "contribution": "Contribución",
+            "contributionValue": "{{value}}",
+            "returnRate": "Tasa de devolución",
+            "returnRateValue": "{{value}}"
+        },
+        "table": {
+            "editProduct": "Editar producto",
+            "duplicateProduct": "Duplicar producto",
+            "deleteProduct": "Eliminar producto"
+        },
+        "messages": {
+            "loadError": "Error al cargar los datos. Intenta de nuevo.",
+            "noProducts": "No se encontraron productos. Intenta ajustar tus filtros."
+        },
+        "list": { "count": "{{count}} productos" },
+        "sort": { "default": "Predeterminado" }
+    },
+    "profile": {
+        "demo": {
+            "title": "Modo demo activo",
+            "body": "Estás usando la cuenta demo. Los cambios se guardan temporalmente y se restablecerán al actualizar la página."
+        },
+        "title": "Perfil",
+        "editProfile": "Editar perfil",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "notSet": "No establecido",
+        "memberSince": "Miembro desde",
+        "lastUpdated": "Última actualización",
+        "labels": {
+            "fullName": "Nombre completo",
+            "email": "Correo",
+            "bio": "Bio",
+            "phone": "Teléfono",
+            "location": "Ubicación"
+        },
+        "errors": {
+            "selectImage": "Por favor selecciona un archivo de imagen",
+            "imageTooLarge": "El tamaño de la imagen debe ser menor a 2MB"
+        }
+    },
+    "users": {
+        "title": "Usuarios",
+        "subtitle": "Administra y monitorea tu base de usuarios",
+        "roles": {
+            "admin": "Admin",
+            "moderator": "Moderador",
+            "user": "Colaborador"
+        },
+        "kpi": {
+            "activeDirectory": "Directorio activo",
+            "activeDirectorySubtitle": "personas en todos los equipos",
+            "activeDirectoryChip": "Sincronización en vivo habilitada",
+            "adminCoverage": "Cobertura de administradores",
+            "adminCoverageSubtitle": "{{percent}}% del total de usuarios",
+            "adminCoverageChip": "Acceso basado en roles",
+            "averageAge": "Edad promedio",
+            "averageAgeDetail": "A través de la base de usuarios",
+            "maleUsers": "Usuarios masculinos",
+            "maleUsersDetail": "Identificados como masculinos",
+            "femaleUsers": "Usuarios femeninos",
+            "femaleUsersDetail": "Identificados como femeninos",
+            "securityLeads": "Líderes de seguridad",
+            "securityLeadsDetail": "Administradores con acceso elevado",
+            "genderDistribution": "Distribución de género",
+            "genderDistributionValue": "{{male}}% masculino · {{female}}% femenino",
+            "totalProfiles": "Perfiles totales",
+            "peopleOps": "Destacado de operaciones de personas",
+            "communityPulse": "Pulso de la comunidad",
+            "communityPulseDescription": "El equilibrio saludable entre administradores y colaboradores mantiene el espacio de trabajo seguro y ágil.",
+            "contributors": "Colaboradores"
+        },
+        "filters": {
+            "title": "Filtros",
+            "roleFocus": "Enfoque de rol",
+            "allRoles": "Todos los roles",
+            "adminOnly": "Solo administradores",
+            "moderators": "Moderadores",
+            "contributors": "Colaboradores",
+            "currentFilter": "Rol: {{role}}"
+        },
+        "search": {
+            "placeholder": "Buscar por nombre o correo..."
+        },
+        "export": {
+            "button": "Exportar CSV",
+            "noUsers": "No hay usuarios para exportar"
+        },
+        "pagination": {
+            "rowsPerPage": "Filas por página:",
+            "of": "de"
+        },
+        "table": {
+            "avatar": "Avatar",
+            "name": "Nombre",
+            "email": "Correo",
+            "role": "Rol",
+            "actions": "Acciones",
+            "view": "Ver",
+            "edit": "Editar",
+            "delete": "Eliminar",
+            "errorLoad": "Error al cargar los datos. Intenta de nuevo.",
+            "noUsers": "No se encontraron usuarios.",
+            "sortBy": "Ordenar por"
+        },
+        "list": { "count": "{{count}} usuarios" }
+    },
+    "common": { "retry": "Reintentar", "default": "Predeterminado" },
+    "footer": {
+        "copyright": "© {{year}} Dashboard. Todos los derechos reservados.",
+        "builtWith": "Construido con React, TypeScript y Material-UI",
+        "links": {
+            "about": "Acerca de",
+            "privacy": "Privacidad",
+            "terms": "Términos",
+            "contact": "Contacto"
+        }
+    },
+    "globalSearch": {
+        "minChars": "Escribe al menos 2 caracteres para buscar",
+        "caption": "Buscar en productos y usuarios",
+        "key": { "esc": "ESC", "enter": "↵" },
+        "toClose": "para cerrar",
+        "toSelect": "para seleccionar",
+        "searchPlaceholder": "Buscar productos... (Ctrl+K)"
+    }
+}

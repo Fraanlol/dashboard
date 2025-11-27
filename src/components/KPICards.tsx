@@ -1,23 +1,10 @@
-import { styled } from '@mui/material/styles'
-import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
-import Grid from '@mui/material/Grid'
+import { Box, Paper, Grid, useTheme } from '@mui/material'
 import Typography from '@mui/material/Typography'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import TrendingDownIcon from '@mui/icons-material/TrendingDown'
 import { ReactNode } from 'react'
-
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: '#fff',
-    ...theme.typography.body2,
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color:
-        (theme.vars ?? theme).palette.text.cards ??
-        (theme.vars ?? theme).palette.text.primary,
-    ...theme.applyStyles('dark', {
-        backgroundColor: '#1A2027',
-    }),
-}))
+import { fadeSlideIn, hoverLift, metricPulse } from '@styles/animations'
+import { heroCardBase, neutralIconShell, trendChip } from '@styles/kpiTokens'
 
 export interface KPICard {
     title: string
@@ -32,124 +19,137 @@ interface KPICardsProps {
 }
 
 export default function KPICards({ cards }: KPICardsProps) {
+    const theme = useTheme()
     return (
-        <Box sx={{ flexGrow: 1, mb: 4 }}>
-            <Grid container spacing={2}>
-                {cards.map((card) => (
-                    <Grid
-                        key={card.title}
-                        size={{ xs: 12, sm: 6, md: 6, lg: 3 }}
-                    >
-                        <Item
-                            sx={{
-                                backgroundColor: 'primary.light',
-                                position: 'relative',
-                            }}
+        <Grid container sx={{ flexGrow: 1, mb: 4 }}>
+            <Grid
+                container
+                size={12}
+                sx={{
+                    flexWrap: 'wrap',
+                }}
+                columnSpacing={2}
+                rowSpacing={2}
+            >
+                {cards.map((card, index) => {
+                    const changeValue = card.change
+                        ? parseFloat(card.change.replace(/[^0-9.-]/g, ''))
+                        : 0
+                    const isPositive = changeValue >= 0
+                    const changeColor = isPositive
+                        ? theme.palette.success.main
+                        : theme.palette.error.main
+                    const TrendIcon = isPositive
+                        ? TrendingUpIcon
+                        : TrendingDownIcon
+
+                    return (
+                        <Grid
+                            key={card.title + index}
+                            size={{ xs: 6, sm: 6, md: 4, lg: 2 }}
                         >
-                            {card.change && (
+                            <Paper
+                                elevation={0}
+                                sx={[
+                                    heroCardBase(theme),
+                                    fadeSlideIn(index * 0.05),
+                                    hoverLift,
+                                ]}
+                            >
+                                {/* Header with Icon and Change */}
                                 <Box
                                     sx={{
-                                        position: 'absolute',
-                                        top: 8,
-                                        right: 0,
-                                        backgroundColor: 'secondary.main',
-                                        color: 'secondary.contrastText',
-                                        px: 1,
-                                        py: 0.5,
-                                        fontSize: '0.75rem',
-                                        fontWeight: 'bold',
-                                        width: 80,
-                                        clipPath:
-                                            'polygon(8px 0, 100% 0, 100% 100%, 8px 100%, 0 50%)',
-                                        '&::before': {
-                                            content: '""',
-                                            position: 'absolute',
-                                            right: -4,
-                                            top: '50%',
-                                            transform: 'translateY(-50%)',
-                                            width: 0,
-                                            height: 0,
-                                            borderTop: '12px solid transparent',
-                                            borderBottom:
-                                                '12px solid transparent',
-                                            borderLeft: '8px solid',
-                                            borderLeftColor: 'secondary.main',
-                                        },
-                                    }}
-                                >
-                                    {card.change}
-                                </Box>
-                            )}
-                            {/* Inside card */}
-                            <Grid
-                                container
-                                flexDirection="row"
-                                className="mb-4"
-                            >
-                                <Item
-                                    elevation={0}
-                                    className="p-2 mr-4"
-                                    sx={{
-                                        backgroundColor:
-                                            'rgb(255 255 255 / 15%)',
-                                        width: 58,
-                                        height: 58,
                                         display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'flex-start',
+                                        mb: 1.5,
                                     }}
                                 >
-                                    <Box
-                                        className="text-white"
-                                        sx={{
-                                            outline: 'none',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        }}
-                                    >
-                                        {card.icon}
+                                    <Box sx={neutralIconShell(theme)}>
+                                        <Box
+                                            sx={{
+                                                color: 'text.secondary',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                fontSize: 20,
+                                            }}
+                                        >
+                                            {card.icon}
+                                        </Box>
                                     </Box>
-                                </Item>
-                                <Grid
-                                    container
-                                    alignItems="flex-start"
-                                    flexDirection="column"
+
+                                    {card.change && (
+                                        <Box
+                                            sx={trendChip(changeColor)}
+                                            className="flex items-center gap-0.5"
+                                        >
+                                            <TrendIcon
+                                                sx={{
+                                                    fontSize: 14,
+                                                    color: changeColor,
+                                                }}
+                                            />
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontWeight: 600,
+                                                    color: changeColor,
+                                                    fontSize: '0.75rem',
+                                                }}
+                                            >
+                                                {card.change}
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                </Box>
+
+                                {/* Title */}
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        color: 'text.secondary',
+                                        mb: 0.25,
+                                        fontSize: '0.8125rem',
+                                        fontWeight: 500,
+                                    }}
                                 >
-                                    <h3 className="uppercase font-bold text-md mb-1">
-                                        {card.title}
-                                    </h3>
-                                    <Typography
-                                        component="p"
-                                        sx={{ color: 'primary.contrastText' }}
-                                        className="font-bold text-2xl"
-                                    >
-                                        {card.value}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            {card.changeLabel && (
-                                <Grid
-                                    container
-                                    justifyContent="space-between"
-                                    sx={{ color: 'primary.contrastText' }}
+                                    {card.title}
+                                </Typography>
+
+                                {/* Value */}
+                                <Typography
+                                    variant="h4"
+                                    sx={[
+                                        metricPulse(0.1 + index * 0.05),
+                                        {
+                                            fontWeight: 700,
+                                            color: 'text.primary',
+                                            fontSize: '1.5rem',
+                                            letterSpacing: '-0.02em',
+                                            mb: 0.5,
+                                        },
+                                    ]}
                                 >
+                                    {card.value}
+                                </Typography>
+
+                                {/* Bottom Label */}
+                                {card.changeLabel && (
                                     <Typography
+                                        variant="caption"
                                         sx={{
-                                            color: 'text.cards',
-                                            fontSize: 'sm.fontSize',
+                                            color: 'text.secondary',
+                                            fontSize: '0.6875rem',
                                         }}
-                                        className=" font-bold"
                                     >
                                         {card.changeLabel}
                                     </Typography>
-                                    <p>{'>'}</p>
-                                </Grid>
-                            )}
-                        </Item>
-                    </Grid>
-                ))}
+                                )}
+                            </Paper>
+                        </Grid>
+                    )
+                })}
             </Grid>
-        </Box>
+        </Grid>
     )
 }

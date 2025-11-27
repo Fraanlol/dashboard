@@ -1,0 +1,398 @@
+{
+    "theme": {
+        "controls": {
+            "light": "Light",
+            "dark": "Dark",
+            "system": "System",
+            "title": "Theme",
+            "currentMode": "Current mode",
+            "useSystem": "Use system setting",
+            "toggle": "Toggle theme",
+            "saved": "Preference saved"
+        }
+    },
+    "app": { "searchPlaceholder": "Search...", "title": "Dashboard Pro" },
+    "auth": {
+        "title": "Welcome Back",
+        "subtitle": "Sign in to your dashboard account",
+        "labels": { "email": "Email", "password": "Password" },
+        "placeholders": { "email": "demo@example.com" },
+        "button": { "signIn": "Sign In" },
+        "welcome": "Welcome back!",
+        "errors": {
+            "fillFields": "Please fill in all fields",
+            "invalidCredentials": "Invalid email or password"
+        },
+        "register": {
+            "title": "Create Account",
+            "subtitle": "Sign up to get started with your dashboard",
+            "confirmPassword": "Confirm Password",
+            "passwordHelper": "Must be at least 6 characters",
+            "button": "Create Account",
+            "success": "Account created successfully!",
+            "error": "Error creating account",
+            "errors": {
+                "passwordLength": "Password must be at least 6 characters",
+                "passwordMismatch": "Passwords do not match"
+            }
+        }
+    },
+    "header": {
+        "searchButton": "Search",
+        "searchShortcut": "Ctrl+K",
+        "notifications": "Notifications",
+        "themeSettings": "Theme settings",
+        "account": "Account"
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "products": "Products",
+        "users": "Users",
+        "settings": "Settings"
+    },
+    "userMenu": {
+        "profile": "Profile",
+        "logout": "Logout",
+        "logoutSuccess": "Logged out successfully",
+        "logoutError": "Error logging out"
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "subtitle": "Welcome to lorem dashboard.",
+        "cards": {
+            "monthlyIncome": "Monthly income",
+            "incomeSource": "Income source",
+            "topProducts": "Top Products",
+            "userActivity": "User Activity"
+        },
+        "kpi": {
+            "revenue": "Revenue",
+            "users": "Users",
+            "orders": "Orders",
+            "products": "Products",
+            "conversion": "Conversion",
+            "pageViews": "Page Views",
+            "vsLastMonth": "vs last month"
+        },
+        "donut": {
+            "revenue": "Revenue",
+            "users": "Users",
+            "orders": "Orders",
+            "products": "Products"
+        },
+        "days": {
+            "monShort": "Mon",
+            "tueShort": "Tue",
+            "wedShort": "Wed",
+            "thuShort": "Thu",
+            "friShort": "Fri",
+            "satShort": "Sat",
+            "sunShort": "Sun"
+        },
+        "bars": {
+            "months": {
+                "jan": "Jan",
+                "feb": "Feb",
+                "mar": "Mar",
+                "apr": "Apr",
+                "may": "May",
+                "jun": "Jun",
+                "jul": "Jul",
+                "aug": "Aug",
+                "sep": "Sep",
+                "oct": "Oct",
+                "nov": "Nov",
+                "dec": "Dec"
+            },
+            "series": {
+                "previousYear": "Previous Year",
+                "currentYear": "Current Year",
+                "previous": "Previous Year",
+                "current": "Current Year"
+            },
+            "vsPreviousYear": "vs previous year"
+        },
+        "chart": {
+            "activeUsers": "Active Users",
+            "newUsers": "New Users"
+        },
+        "recentTransactions": {
+            "title": "Recent Transactions",
+            "date": "Date",
+            "user": "User",
+            "amount": "Amount",
+            "status": "Status",
+            "statusValues": {
+                "approved": "Approved",
+                "pending": "Pending",
+                "declined": "Declined"
+            }
+        },
+        "activity": {
+            "title": "Recent Activity",
+            "subtitle": "Latest events and updates",
+            "time1": "09:30 AM",
+            "event1": "New user registered: Sarah",
+            "time2": "10:15 AM",
+            "event2": "Order #1234 placed by John",
+            "time3": "11:00 AM",
+            "event3": "Product 'Laptop' added to inventory",
+            "time4": "02:45 PM",
+            "event4": "User Mike updated profile",
+            "time5": "05:00 PM",
+            "event5": "Password changed for user Mike",
+            "loadMore": "Load More"
+        }
+    },
+    "dialog": {
+        "deleteProduct": {
+            "title": "Delete Product",
+            "warning": "This action cannot be undone!",
+            "pre": "Are you sure you want to delete",
+            "post": "? This will remove the product from your inventory.",
+            "confirm": "Delete Product"
+        },
+        "actions": { "cancel": "Cancel", "close": "Close" },
+        "deleteUser": {
+            "title": "Delete User",
+            "warning": "This action cannot be undone",
+            "confirmText": "Are you sure you want to delete this user?",
+            "userName": "User name:",
+            "confirm": "Delete"
+        }
+    },
+    "userModal": {
+        "title": { "create": "Create New User", "edit": "Edit User" },
+        "label": {
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "age": "Age",
+            "gender": "Gender",
+            "role": "Role"
+        },
+        "options": {
+            "gender": { "male": "Male", "female": "Female" },
+            "role": {
+                "user": "User",
+                "admin": "Admin",
+                "moderator": "Moderator"
+            }
+        },
+        "validation": {
+            "firstName": "First name is required",
+            "lastName": "Last name is required",
+            "emailRequired": "Email is required",
+            "emailInvalid": "Invalid email format",
+            "ageRange": "Age must be between 1 and 120"
+        },
+        "buttons": {
+            "cancel": "Cancel",
+            "create": "Create",
+            "update": "Update"
+        }
+    },
+    "products": {
+        "title": "Products",
+        "subtitle": "Manage your product inventory",
+        "searchPlaceholder": "Search products...",
+        "addProduct": "Add product",
+        "actions": {
+            "addProduct": "Add product",
+            "ariaLabel": "Products actions",
+            "exportCSV": "Export CSV"
+        },
+        "export": {
+            "button": "Export CSV",
+            "noProducts": "No products to export"
+        },
+        "pagination": {
+            "rowsPerPage": "Rows per page:",
+            "of": "of"
+        },
+        "filters": {
+            "categories": "Categories",
+            "searchPlaceholder": "Search products...",
+            "filterByCategory": "Filter by Category",
+            "allCategories": "All Categories",
+            "title": "Filters",
+            "active": "Active",
+            "inventoryFilters": "Inventory filters",
+            "shapeCatalog": "Shape the catalog view",
+            "description": "Combine category, stock, and pricing lenses to focus on the ranges that need attention.",
+            "allFilters": "All filters",
+            "clearAll": "Clear all filters",
+            "tokenCategory": "Category: {{category}}",
+            "tokenStock": "Stock: {{stock}}",
+            "tokenPrice": "Price: {{price}}",
+            "stock": {
+                "title": "Stock Status",
+                "all": "All Stock",
+                "inStock": "In Stock",
+                "lowStock": "Low Stock",
+                "outOfStock": "Out of Stock"
+            },
+            "price": {
+                "title": "Price Range",
+                "all": "All Prices",
+                "under50": "Under $50",
+                "50to100": "$50 - $100",
+                "100to500": "$100 - $500",
+                "over500": "Over $500"
+            }
+        },
+        "kpi": {
+            "totalProducts": "Total products",
+            "totalProductsSubtitle": "Actively listed SKUs",
+            "totalProductsChange": "+5% vs last month",
+            "catalogValue": "Catalog value",
+            "catalogValueSubtitle": "In-stock valuation",
+            "catalogValueChange": "+8% vs last month",
+            "categories": "Categories",
+            "categoriesDetail": "+2 new collections",
+            "lowStockAlerts": "Low stock alerts",
+            "lowStockDetail": "Needs replenishment",
+            "newArrivals": "New arrivals",
+            "newArrivalsDetail": "This quarter",
+            "topRatedLine": "Top-rated line",
+            "topRatedDetail": "Aloe skin kit",
+            "inventoryHealth": "Inventory health",
+            "readyToShip": "{{percent}}% ready to ship",
+            "shippedThisWeek": "Shipped this week",
+            "shippedCount": "{{count}} units",
+            "backorderRisk": "Backorder risk",
+            "backorderCount": "{{count}} items",
+            "avgFulfillment": "Avg. fulfillment",
+            "avgFulfillmentDays": "{{days}} days",
+            "launchSpotlight": "Launch spotlight",
+            "urbanCommuter": "Urban commuter",
+            "liftSinceRollout": "+34% lift since rollout",
+            "sellThrough": "Sell-through",
+            "sellThroughValue": "{{value}}",
+            "contribution": "Contribution",
+            "contributionValue": "{{value}}",
+            "returnRate": "Return rate",
+            "returnRateValue": "{{value}}"
+        },
+        "table": {
+            "editProduct": "Edit product",
+            "duplicateProduct": "Duplicate product",
+            "deleteProduct": "Delete product"
+        },
+        "messages": {
+            "loadError": "Failed to load data. Please try again.",
+            "noProducts": "No products found. Try adjusting your filters."
+        },
+        "list": { "count": "{{count}} products" },
+        "sort": { "default": "Default" }
+    },
+    "profile": {
+        "demo": {
+            "title": "Demo Mode Active",
+            "body": "You're using the demo account. Changes are saved temporarily and will reset on page refresh."
+        },
+        "title": "Profile",
+        "editProfile": "Edit Profile",
+        "cancel": "Cancel",
+        "save": "Save",
+        "notSet": "Not set",
+        "memberSince": "Member since",
+        "lastUpdated": "Last updated",
+        "labels": {
+            "fullName": "Full Name",
+            "email": "Email",
+            "bio": "Bio",
+            "phone": "Phone",
+            "location": "Location"
+        },
+        "errors": {
+            "selectImage": "Please select an image file",
+            "imageTooLarge": "Image size must be less than 2MB"
+        }
+    },
+    "users": {
+        "title": "Users",
+        "subtitle": "Manage and monitor your user base",
+        "roles": {
+            "admin": "Admin",
+            "moderator": "Moderator",
+            "user": "Contributor"
+        },
+        "kpi": {
+            "activeDirectory": "Active directory",
+            "activeDirectorySubtitle": "people across all teams",
+            "activeDirectoryChip": "Live sync enabled",
+            "adminCoverage": "Admin coverage",
+            "adminCoverageSubtitle": "{{percent}}% of total users",
+            "adminCoverageChip": "Role-based access",
+            "averageAge": "Average age",
+            "averageAgeDetail": "Across the user base",
+            "maleUsers": "Male users",
+            "maleUsersDetail": "Identified as male",
+            "femaleUsers": "Female users",
+            "femaleUsersDetail": "Identified as female",
+            "securityLeads": "Security leads",
+            "securityLeadsDetail": "Admins with elevated access",
+            "genderDistribution": "Gender distribution",
+            "genderDistributionValue": "{{male}}% male · {{female}}% female",
+            "totalProfiles": "Total profiles",
+            "peopleOps": "People operations spotlight",
+            "communityPulse": "Community pulse",
+            "communityPulseDescription": "Healthy balance between admins and contributors keeps the workspace safe & nimble.",
+            "contributors": "Contributors"
+        },
+        "filters": {
+            "title": "Filters",
+            "roleFocus": "Role focus",
+            "allRoles": "All roles",
+            "adminOnly": "Admin only",
+            "moderators": "Moderators",
+            "contributors": "Contributors",
+            "currentFilter": "Role: {{role}}"
+        },
+        "search": {
+            "placeholder": "Search by name or email..."
+        },
+        "export": {
+            "button": "Export CSV",
+            "noUsers": "No users to export"
+        },
+        "pagination": {
+            "rowsPerPage": "Rows per page:",
+            "of": "of"
+        },
+        "table": {
+            "avatar": "Avatar",
+            "name": "Name",
+            "email": "Email",
+            "role": "Role",
+            "actions": "Actions",
+            "view": "View",
+            "edit": "Edit",
+            "delete": "Delete",
+            "errorLoad": "Failed to load data. Please try again.",
+            "noUsers": "No users found.",
+            "sortBy": "Sort by"
+        },
+        "list": { "count": "{{count}} users" }
+    },
+    "common": { "retry": "Retry", "default": "Default" },
+    "footer": {
+        "copyright": "© {{year}} Dashboard. All rights reserved.",
+        "builtWith": "Built with React, TypeScript & Material-UI",
+        "links": {
+            "about": "About",
+            "privacy": "Privacy",
+            "terms": "Terms",
+            "contact": "Contact"
+        }
+    },
+    "globalSearch": {
+        "minChars": "Type at least 2 characters to search",
+        "caption": "Search across products and users",
+        "key": { "esc": "ESC", "enter": "↵" },
+        "toClose": "to close",
+        "toSelect": "to select",
+        "searchPlaceholder": "Search products... (Ctrl+K)"
+    }
+}

@@ -11,6 +11,7 @@ import {
     Grid,
 } from '@mui/material'
 import { useUsersStore } from '@stores/usersStore'
+import { useTranslation } from 'react-i18next'
 
 const UsersPagination = ({
     totalUsers,
@@ -22,6 +23,7 @@ const UsersPagination = ({
     rowsPerPage: number
 }) => {
     const theme = useTheme()
+    const { t } = useTranslation()
 
     const setRowsPerPage = useUsersStore((state) => state.setRowsPerPage)
     const setCurrentPage = useUsersStore((state) => state.setCurrentPage)
@@ -49,7 +51,7 @@ const UsersPagination = ({
                             variant="body2"
                             sx={{ color: theme.palette.text.secondary }}
                         >
-                            Rows per page:
+                            {t('users.pagination.rowsPerPage')}
                         </Typography>
                         <FormControl size="small">
                             <Select
@@ -69,7 +71,7 @@ const UsersPagination = ({
                             variant="body2"
                             sx={{ color: theme.palette.text.secondary }}
                         >
-                            {`${(page - 1) * rowsPerPage + 1}-${Math.min(page * rowsPerPage, totalUsers)} of ${totalUsers}`}
+                            {`${(page - 1) * rowsPerPage + 1}-${Math.min(page * rowsPerPage, totalUsers)} ${t('users.pagination.of')} ${totalUsers}`}
                         </Typography>
                     </Box>
                 </Grid>

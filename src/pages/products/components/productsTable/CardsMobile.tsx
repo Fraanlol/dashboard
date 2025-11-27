@@ -1,16 +1,22 @@
 import {
+    Alert,
     Box,
-    Typography,
-    Stack,
-    Divider,
     Button,
-    Menu,
-    MenuItem,
+    Card,
+    CardContent,
+    Divider,
     ListItemIcon,
     ListItemText,
+    Menu,
+    MenuItem,
+    Skeleton,
+    Stack,
+    Typography,
 } from '@mui/material'
+import RefreshIcon from '@mui/icons-material/Refresh'
 import SortIcon from '@mui/icons-material/Sort'
 import { Product, useProdStore, SortFieldType } from '@stores/prodStore'
+import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import CheckIcon from '@mui/icons-material/Check'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
@@ -22,14 +28,17 @@ export default function CardMobile({
     products,
     isLoading,
     isError,
+    refetch,
 }: {
     products: Product[]
     isLoading: boolean
     isError: boolean
+    refetch: () => void
 }) {
     const sortField = useProdStore((state) => state.sortField)
     const sortOrder = useProdStore((state) => state.sortOrder)
     const setSorting = useProdStore((state) => state.setSorting)
+    const { t } = useTranslation()
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
@@ -48,18 +57,115 @@ export default function CardMobile({
     }
 
     if (isLoading) {
-        // Tu skeleton aquí
-        return null
+        return (
+            <Stack spacing={2} sx={{ px: { xs: 0, sm: 0 }, pb: 2 }}>
+                {[1, 2, 3].map((item) => (
+                    <Card key={item}>
+                        <CardContent sx={{ p: 2.5 }}>
+                            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                                <Skeleton
+                                    variant="rounded"
+                                    width={72}
+                                    height={72}
+                                />
+                                <Box sx={{ flex: 1 }}>
+                                    <Skeleton
+                                        variant="text"
+                                        width="80%"
+                                        height={28}
+                                    />
+                                    <Skeleton
+                                        variant="rounded"
+                                        width={100}
+                                        height={24}
+                                        sx={{ mt: 1 }}
+                                    />
+                                </Box>
+                            </Box>
+                            <Divider sx={{ my: 2 }} />
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    mb: 2,
+                                }}
+                            >
+                                <Box>
+                                    <Skeleton variant="text" width={60} />
+                                    <Skeleton
+                                        variant="text"
+                                        width={80}
+                                        height={32}
+                                    />
+                                </Box>
+                                <Box>
+                                    <Skeleton variant="text" width={60} />
+                                    <Skeleton
+                                        variant="text"
+                                        width={80}
+                                        height={32}
+                                    />
+                                </Box>
+                            </Box>
+                            <Divider sx={{ my: 2 }} />
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    gap: 1,
+                                    justifyContent: 'flex-end',
+                                }}
+                            >
+                                <Skeleton
+                                    variant="circular"
+                                    width={40}
+                                    height={40}
+                                />
+                                <Skeleton
+                                    variant="circular"
+                                    width={40}
+                                    height={40}
+                                />
+                                <Skeleton
+                                    variant="circular"
+                                    width={40}
+                                    height={40}
+                                />
+                            </Box>
+                        </CardContent>
+                    </Card>
+                ))}
+            </Stack>
+        )
     }
 
     if (isError) {
-        // Tu error state aquí
-        return null
+        return (
+            <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Alert
+                    severity="error"
+                    action={
+                        <Button
+                            color="inherit"
+                            size="small"
+                            startIcon={<RefreshIcon />}
+                            onClick={() => refetch()}
+                        >
+                            {t('common.retry')}
+                        </Button>
+                    }
+                >
+                    {t('products.messages.loadError')}
+                </Alert>
+            </Box>
+        )
     }
 
     if (products.length === 0) {
-        // Tu empty state aquí
-        return null
+        return (
+            <Alert severity="info" sx={{ mt: 2 }}>
+                {t('products.messages.noProducts')}
+            </Alert>
+        )
     }
 
     return (
@@ -77,7 +183,7 @@ export default function CardMobile({
                 }}
             >
                 <Typography variant="body2" color="text.secondary">
-                    {products.length} products
+                    {t('products.list.count', { count: products.length })}
                 </Typography>
 
                 <Button
@@ -126,7 +232,7 @@ export default function CardMobile({
                     <ListItemIcon>
                         {!sortField && <CheckIcon fontSize="small" />}
                     </ListItemIcon>
-                    <ListItemText>Default</ListItemText>
+                    <ListItemText>{t('products.sort.default')}</ListItemText>
                 </MenuItem>
                 <Divider />
                 {SORT_OPTIONS.map((option) => (

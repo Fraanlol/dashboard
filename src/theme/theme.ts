@@ -105,7 +105,7 @@ const shape = {
 const components = {
     MuiButton: {
         styleOverrides: {
-            root: { borderRadius: 8, textTransform: 'none' },
+            root: { borderRadius: 8, textTransform: 'none' as const },
         },
     },
     MuiCard: {
@@ -123,7 +123,7 @@ export const createAppTheme = (mode: 'light' | 'dark'): Theme => {
         shape: { ...shape },
         typography: { ...typography },
         spacing: 8,
-        components: components as any,
+        components,
         breakpoints: {
             values: {
                 xs: 0,

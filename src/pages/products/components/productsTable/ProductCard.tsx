@@ -12,6 +12,8 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Product } from '@stores/prodStore'
 import { getStockChipProps } from '../../utils/productHelpers'
+import { useProductModalStore } from '@stores/productModalStore'
+import { useDeleteDialogStore } from '@stores/productModalStore'
 
 interface ProductCardProps {
     product: Product
@@ -19,6 +21,10 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
     const { id, title, category, price, stock, thumbnail } = product
+    const openEditModal = useProductModalStore((state) => state.openEditModal)
+    const openDeleteDialog = useDeleteDialogStore(
+        (state) => state.openDeleteDialog
+    )
 
     return (
         <Card
@@ -38,6 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                         component="img"
                         src={thumbnail}
                         alt={title}
+                        loading="lazy"
                         sx={{
                             width: 72,
                             height: 72,
@@ -173,6 +180,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     <IconButton
                         size="medium"
                         color="primary"
+                        onClick={() => openEditModal(product)}
                         sx={{
                             border: '1px solid',
                             borderColor: 'primary.main',
@@ -203,6 +211,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                     <IconButton
                         size="medium"
                         color="error"
+                        onClick={() =>
+                            openDeleteDialog({
+                                id: product.id,
+                                title: product.title,
+                            })
+                        }
                         sx={{
                             border: '1px solid',
                             borderColor: 'error.main',

@@ -2,9 +2,11 @@ import { Box, Typography, Link, Divider } from '@mui/material'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import TwitterIcon from '@mui/icons-material/Twitter'
+import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
+    const { t } = useTranslation()
 
     return (
         <Box
@@ -32,10 +34,10 @@ export default function Footer() {
                 {/* Left side - Copyright */}
                 <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
                     <Typography variant="body2" color="text.secondary">
-                        © {currentYear} Dashboard. All rights reserved.
+                        {t('footer.copyright', { year: currentYear })}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                        Built with React, TypeScript & Material-UI
+                        {t('footer.builtWith')}
                     </Typography>
                 </Box>
 
@@ -54,7 +56,7 @@ export default function Footer() {
                         color="text.secondary"
                         sx={{ fontSize: '0.875rem' }}
                     >
-                        About
+                        {t('footer.links.about')}
                     </Link>
                     <Link
                         href="#"
@@ -62,7 +64,7 @@ export default function Footer() {
                         color="text.secondary"
                         sx={{ fontSize: '0.875rem' }}
                     >
-                        Privacy
+                        {t('footer.links.privacy')}
                     </Link>
                     <Link
                         href="#"
@@ -70,7 +72,7 @@ export default function Footer() {
                         color="text.secondary"
                         sx={{ fontSize: '0.875rem' }}
                     >
-                        Terms
+                        {t('footer.links.terms')}
                     </Link>
                     <Link
                         href="#"
@@ -78,7 +80,7 @@ export default function Footer() {
                         color="text.secondary"
                         sx={{ fontSize: '0.875rem' }}
                     >
-                        Contact
+                        {t('footer.links.contact')}
                     </Link>
                 </Box>
 

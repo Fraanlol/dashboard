@@ -24,7 +24,7 @@ export interface ProdStore {
     rowsPerPage: number
     currentCategory: string
     searchQuery: string
-    filters: Record<string, any>
+    filters: Record<string, unknown>
     sortField: SortFieldType
     sortOrder: SortOrderType
     setCurrentPage: (page: number) => void

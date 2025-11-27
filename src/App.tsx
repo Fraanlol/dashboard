@@ -1,19 +1,20 @@
 // src/App.tsx
 import { AppRouter } from './routes/AppRouter'
-import { BrowserRouter } from 'react-router-dom'
-import Notifications from '@components/Notifications'
+import ErrorBoundary from '@components/ErrorBoundary'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 
 const queryClient = new QueryClient()
 
 export const App = () => {
+    const { t } = useTranslation()
+
     return (
-        <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
+        <ErrorBoundary>
+            <QueryClientProvider client={queryClient}>
                 <AppRouter />
-                <Notifications />
-            </BrowserRouter>
-        </QueryClientProvider>
+            </QueryClientProvider>
+        </ErrorBoundary>
     )
 }
 

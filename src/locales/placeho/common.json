@@ -1,0 +1,398 @@
+{
+    "theme": {
+        "controls": {
+            "light": "Lorem",
+            "dark": "Lorem",
+            "system": "Lorem",
+            "title": "Lorem",
+            "currentMode": "Lorem mode",
+            "useSystem": "Lorem system setting",
+            "toggle": "Lorem toggle",
+            "saved": "Lorem preference saved"
+        }
+    },
+    "app": { "searchPlaceholder": "Lorem...", "title": "Lorem Pro" },
+    "auth": {
+        "title": "Lorem",
+        "subtitle": "Lorem",
+        "labels": { "email": "Lorem", "password": "Lorem" },
+        "placeholders": { "email": "Lorem@ejemplo.com" },
+        "button": { "signIn": "Lorem" },
+        "welcome": "Lorem de nuevo!",
+        "errors": {
+            "fillFields": "Lorem",
+            "invalidCredentials": "Lorem"
+        },
+        "register": {
+            "title": "Lorem",
+            "subtitle": "Lorem",
+            "confirmPassword": "Lorem",
+            "passwordHelper": "DLorem",
+            "button": "Lorem",
+            "success": "¡Lorem!",
+            "error": "Lorem",
+            "errors": {
+                "passwordLength": "Lorem",
+                "passwordMismatch": "Lorem"
+            }
+        }
+    },
+    "header": {
+        "searchButton": "Lorem",
+        "searchShortcut": "Lorem+K",
+        "notifications": "Lorem",
+        "themeSettings": "Lorem de tema",
+        "account": "Lorem"
+    },
+    "nav": {
+        "dashboard": "Lorem",
+        "products": "Lorem",
+        "users": "Lorem",
+        "settings": "Lorem"
+    },
+    "userMenu": {
+        "profile": "Lorem",
+        "logout": "Lorem sesión",
+        "logoutSuccess": "Lorem cerrada correctamente",
+        "logoutError": "Lorem al cerrar sesión"
+    },
+    "dashboard": {
+        "title": "Lorem",
+        "subtitle": "Lorem al panel de control.",
+        "cards": {
+            "monthlyIncome": "Lorem mensuales",
+            "incomeSource": "Lorem de ingresos",
+            "topProducts": "Lorem principales",
+            "userActivity": "Lorem de usuarios"
+        },
+        "kpi": {
+            "revenue": "Lorem",
+            "users": "Lorem",
+            "orders": "Lorem",
+            "products": "Lorem",
+            "conversion": "Lorem",
+            "pageViews": "Lorem",
+            "vsLastMonth": "Lorem Lorem Lorem"
+        },
+        "donut": {
+            "revenue": "Lorem",
+            "users": "Lorem",
+            "orders": "Lorem",
+            "products": "Lorem"
+        },
+        "days": {
+            "monShort": "Lorem",
+            "tueShort": "Lorem",
+            "wedShort": "Lorem",
+            "thuShort": "Lorem",
+            "friShort": "Lorem",
+            "satShort": "Lorem",
+            "sunShort": "Lorem"
+        },
+        "bars": {
+            "months": {
+                "jan": "Lorem",
+                "feb": "Lorem",
+                "mar": "Lorem",
+                "apr": "Lorem",
+                "may": "Lorem",
+                "jun": "Lorem",
+                "jul": "Lorem",
+                "aug": "Lorem",
+                "sep": "Lorem",
+                "oct": "Lorem",
+                "nov": "Lorem",
+                "dec": "Lorem"
+            },
+            "series": {
+                "previousYear": "Lorem anterior",
+                "currentYear": "Lorem actual",
+                "previous": "Lorem anterior",
+                "current": "Lorem actual"
+            },
+            "vsPreviousYear": "vs Lorem anterior"
+        },
+        "chart": {
+            "activeUsers": "Lorem activos",
+            "newUsers": "Lorem nuevos"
+        },
+        "recentTransactions": {
+            "title": "Lorem recientes",
+            "date": "Lorem",
+            "user": "Lorem",
+            "amount": "Lorem",
+            "status": "Lorem",
+            "statusValues": {
+                "approved": "Lorem",
+                "pending": "Lorem",
+                "declined": "Lorem"
+            }
+        },
+        "activity": {
+            "title": "Lorem",
+            "subtitle": "Lorem y actualizaciones recientes.",
+            "time1": "09:30 AM",
+            "event1": "Usuario John Doe Lorem la cuenta.",
+            "time2": "10:15 AM",
+            "event2": "Producto 'Aloe Skin Kit' Lorem agregado al inventario.",
+            "time3": "11:00 AM",
+            "event3": "Pedido #1234 Lorem procesado con éxito.",
+            "time4": "02:45 PM",
+            "event4": "Usuario Jane Smith Lorem su perfil.",
+            "time5": "05:00 PM",
+            "event5": "Lorem cambiada para el usuario Mike.",
+            "loadMore": "Lorem más"
+        }
+    },
+    "dialog": {
+        "deleteProduct": {
+            "title": "Lorem producto",
+            "warning": "Lorem acción no se puede Lorem!",
+            "pre": "¿Estás Lorem de que deseas eliminar",
+            "post": "? Esto Lorem el producto de tu inventario.",
+            "confirm": "Lorem producto"
+        },
+        "actions": { "cancel": "Lorem", "close": "Lorem" },
+        "deleteUser": {
+            "title": "Lorem usuario",
+            "warning": "¡Esta Lorem no se puede deshacer!",
+            "confirmText": "¿Estás Lorem de que deseas eliminar este usuario?",
+            "userName": "Nombre de usLoremuario:",
+            "confirm": "Lorem"
+        }
+    },
+    "userModal": {
+        "title": { "create": "Lorem Nuevo Usuario", "edit": "Editar Usuario" },
+        "label": {
+            "firstName": "Lorem",
+            "lastName": "Lorem",
+            "email": "Lorem electrónico",
+            "age": "Lorem",
+            "gender": "Lorem",
+            "role": "Lorem"
+        },
+        "options": {
+            "gender": { "male": "Lorem", "female": "Femenino" },
+            "role": {
+                "user": "Lorem",
+                "admin": "Lorem",
+                "moderator": "Lorem"
+            }
+        },
+        "validation": {
+            "firstName": "El Lorem es obligatorio",
+            "lastName": "El Lorem es obligatorio",
+            "emailRequired": "El Lorem es obligatorio",
+            "emailInvalid": "Lorem de correo inválido",
+            "ageRange": "La Lorem debe estar entre 1 y 120"
+        },
+        "buttons": {
+            "cancel": "Lorem",
+            "create": "Lorem",
+            "update": "Lorem"
+        }
+    },
+    "products": {
+        "title": "Lorem",
+        "subtitle": "Lorem Lorem Lorem",
+        "searchPlaceholder": "Lorem Lorem...",
+        "addProduct": "Lorem Lorem",
+        "actions": {
+            "addProduct": "Lorem Lorem",
+            "ariaLabel": "Lorem Lorem",
+            "exportCSV": "Lorem CSV"
+        },
+        "export": {
+            "button": "Lorem CSV",
+            "noProducts": "Lorem Lorem Lorem"
+        },
+        "pagination": {
+            "rowsPerPage": "Lorem Lorem Lorem:",
+            "of": "Lorem"
+        },
+        "filters": {
+            "categories": "Lorem",
+            "searchPlaceholder": "Loremrch products...",
+            "filterByCategory": "Lorem por categoría",
+            "allCategories": "Lorem las categorías",
+            "title": "Lorem",
+            "active": "AcLoremivo",
+            "inventoryFilters": "Lorem de inventario",
+            "shapeCatalog": "Dar Lorem a la vista del catálogo",
+            "description": "Lorem categoría, stock y rangos de precio para enfocarte en lo que necesita atención.",
+            "allFilters": "Lorem los filtros",
+            "clearAll": "Lorem todos los filtros",
+            "tokenCategory": "CaLoremtegoría: {{category}}",
+            "tokenStock": "Lorem: {{stock}}",
+            "tokenPrice": "Lorem: {{price}}",
+            "stock": {
+                "title": "Lorem de Lorem",
+                "all": "Todo el Lorem",
+                "inStock": "Lorem Lorem",
+                "lowStock": "Bajo stock",
+                "outOfStock": "Lorem"
+            },
+            "price": {
+                "title": "Lorem de Lorem",
+                "all": "Lorem los Lorem",
+                "under50": "Lorem de $50",
+                "50to100": "$50 - $100",
+                "100to500": "$100 - $500",
+                "over500": "Más de $500"
+            }
+        },
+        "kpi": {
+            "totalProducts": "Lorem Lorem",
+            "totalProductsSubtitle": "Lorem Lorem Lorem",
+            "totalProductsChange": "+5% Lorem Lorem Lorem",
+            "catalogValue": "Lorem Lorem",
+            "catalogValueSubtitle": "Lorem Lorem Lorem",
+            "catalogValueChange": "+8% Lorem Lorem Lorem",
+            "categories": "Lorem",
+            "categoriesDetail": "+2 Lorem Lorem",
+            "lowStockAlerts": "Lorem Lorem Lorem",
+            "lowStockDetail": "Lorem Lorem",
+            "newArrivals": "Lorem Lorem",
+            "newArrivalsDetail": "Lorem Lorem",
+            "topRatedLine": "Lorem Lorem Lorem",
+            "topRatedDetail": "Lorem Lorem Lorem",
+            "inventoryHealth": "Lorem Lorem",
+            "readyToShip": "{{percent}}% Lorem Lorem Lorem",
+            "shippedThisWeek": "Lorem Lorem Lorem",
+            "shippedCount": "{{count}} Lorem",
+            "backorderRisk": "Lorem Lorem Lorem",
+            "backorderCount": "{{count}} Lorem",
+            "avgFulfillment": "Lorem Lorem",
+            "avgFulfillmentDays": "{{days}} Lorem",
+            "launchSpotlight": "Lorem Lorem",
+            "urbanCommuter": "Lorem Lorem",
+            "liftSinceRollout": "+34% Lorem Lorem Lorem",
+            "sellThrough": "Lorem Lorem",
+            "sellThroughValue": "{{value}}",
+            "contribution": "Lorem",
+            "contributionValue": "{{value}}",
+            "returnRate": "Lorem Lorem",
+            "returnRateValue": "{{value}}"
+        },
+        "table": {
+            "editProduct": "Lorem producto",
+            "duplicateProduct": "DuLoremplicar producto",
+            "deleteProduct": "Lorem producto"
+        },
+        "messages": {
+            "loadError": "Lorem al cargar los datos. Intenta de nuevo.",
+            "noProducts": "Lorem se Lorem productos. Intenta ajustar tus filtros."
+        },
+        "list": { "count": "{{count}} Lorem" },
+        "sort": { "default": "Lorem" }
+    },
+    "profile": {
+        "demo": {
+            "title": "MoLorem",
+            "body": "EsLoremnte y se restablecerán al actualizar la página."
+        },
+        "title": "Lorem",
+        "editProfile": "Lorem perfil",
+        "cancel": "Lorem",
+        "save": "Lorem",
+        "notSet": "Lorem establecido",
+        "memberSince": "Lorem desde",
+        "lastUpdated": "Lorem actualización",
+        "labels": {
+            "fullName": "Lorem completo",
+            "email": "Lorem",
+            "bio": "Lorem",
+            "phone": "Lorem",
+            "location": "Lorem"
+        },
+        "errors": {
+            "selectImage": "Lorem faLoremgen",
+            "imageTooLarge": "Lorem taLorem"
+        }
+    },
+    "users": {
+        "title": "Lorem",
+        "subtitle": "Lorem Lorem Lorem",
+        "roles": {
+            "admin": "Lorem",
+            "moderator": "Lorem",
+            "user": "Lorem"
+        },
+        "kpi": {
+            "activeDirectory": "Lorem Lorem",
+            "activeDirectorySubtitle": "Lorem Lorem Lorem",
+            "activeDirectoryChip": "Lorem Lorem Lorem",
+            "adminCoverage": "Lorem Lorem",
+            "adminCoverageSubtitle": "{{percent}}% Lorem Lorem",
+            "adminCoverageChip": "Lorem Lorem Lorem",
+            "averageAge": "Lorem Lorem",
+            "averageAgeDetail": "Lorem Lorem Lorem",
+            "maleUsers": "Lorem Lorem",
+            "maleUsersDetail": "Lorem Lorem Lorem",
+            "femaleUsers": "Lorem Lorem",
+            "femaleUsersDetail": "Lorem Lorem Lorem",
+            "securityLeads": "Lorem Lorem",
+            "securityLeadsDetail": "Lorem Lorem Lorem Lorem",
+            "genderDistribution": "Lorem Lorem",
+            "genderDistributionValue": "{{male}}% Lorem · {{female}}% Lorem",
+            "totalProfiles": "Lorem Lorem",
+            "peopleOps": "Lorem Lorem Lorem",
+            "communityPulse": "Lorem Lorem",
+            "communityPulseDescription": "Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem.",
+            "contributors": "Lorem"
+        },
+        "filters": {
+            "title": "Lorem",
+            "roleFocus": "Lorem Lorem",
+            "allRoles": "Lorem Lorem",
+            "adminOnly": "Lorem Lorem",
+            "moderators": "Lorem",
+            "contributors": "Lorem",
+            "currentFilter": "Lorem: {{role}}"
+        },
+        "search": {
+            "placeholder": "Lorem Lorem Lorem Lorem..."
+        },
+        "export": {
+            "button": "Lorem CSV",
+            "noUsers": "Lorem Lorem Lorem"
+        },
+        "pagination": {
+            "rowsPerPage": "Lorem Lorem Lorem:",
+            "of": "Lorem"
+        },
+        "table": {
+            "avatar": "Lorem",
+            "name": "Lorem",
+            "email": "Lorem",
+            "role": "Lorem",
+            "actions": "Lorem",
+            "view": "Lorem",
+            "edit": "Lorem",
+            "delete": "Lorem",
+            "errorLoad": "Lorem Lorem Lorem.",
+            "noUsers": "Lorem Lorem.",
+            "sortBy": "Lorem Lorem"
+        },
+        "list": { "count": "{{count}} Lorem" }
+    },
+    "common": { "retry": "Lorem", "default": "Lorem" },
+    "footer": {
+        "copyright": "© {{year}} Lorem. Todos lLorem.",
+        "builtWith": "Construido con React, TypeScript y Material-UI",
+        "links": {
+            "about": "ALorem",
+            "privacy": "PLoremd",
+            "terms": "TérLorems",
+            "contact": "CLoremo"
+        }
+    },
+    "globalSearch": {
+        "minChars": "EsLorem",
+        "caption": "BLorems",
+        "key": { "esc": "Lorem", "enter": "↵" },
+        "toClose": "Lorem",
+        "toSelect": "Lorem",
+        "searchPlaceholder": "Loremrch products..."
+    }
+}

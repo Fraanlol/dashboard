@@ -14,16 +14,18 @@ import {
 } from '@mui/icons-material'
 import { useThemeMode } from '../theme/ThemeProvider'
 import { useSystemThemeSync } from '../hooks/useSystemTheme'
+import { useTranslation } from 'react-i18next'
 
 const ThemeControls = () => {
     const { mode, toggleTheme, setTheme } = useThemeMode()
     const { syncWithSystem } = useSystemThemeSync()
+    const { t } = useTranslation()
 
     return (
         <Card sx={{ maxWidth: 400, m: 2 }}>
             <CardContent>
                 <Typography variant="h6" gutterBottom>
-                    🎨 Controles de Tema
+                    {t('theme.controls.title')}
                 </Typography>
 
                 <Typography
@@ -31,8 +33,12 @@ const ThemeControls = () => {
                     color="text.secondary"
                     sx={{ mb: 2 }}
                 >
-                    Modo actual:{' '}
-                    <strong>{mode === 'light' ? 'Claro' : 'Oscuro'}</strong>
+                    {t('theme.controls.currentMode')}:{' '}
+                    <strong>
+                        {mode === 'light'
+                            ? t('theme.controls.light')
+                            : t('theme.controls.dark')}
+                    </strong>
                 </Typography>
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -44,14 +50,14 @@ const ThemeControls = () => {
                                 mode === 'light' ? 'contained' : 'outlined'
                             }
                         >
-                            Claro
+                            {t('theme.controls.light')}
                         </Button>
                         <Button
                             startIcon={<Brightness4 />}
                             onClick={() => setTheme('dark')}
                             variant={mode === 'dark' ? 'contained' : 'outlined'}
                         >
-                            Oscuro
+                            {t('theme.controls.dark')}
                         </Button>
                     </ButtonGroup>
 
@@ -61,11 +67,11 @@ const ThemeControls = () => {
                         variant="text"
                         size="small"
                     >
-                        Usar preferencia del sistema
+                        {t('theme.controls.useSystem')}
                     </Button>
 
                     <Button onClick={toggleTheme} variant="text" size="small">
-                        🔄 Alternar tema
+                        {t('theme.controls.toggle')}
                     </Button>
                 </Box>
 
@@ -74,7 +80,7 @@ const ThemeControls = () => {
                     display="block"
                     sx={{ mt: 2, opacity: 0.7 }}
                 >
-                    💾 Tu preferencia se guarda automáticamente
+                    {t('theme.controls.saved')}
                 </Typography>
             </CardContent>
         </Card>

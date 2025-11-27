@@ -1,19 +1,30 @@
 import MainLayout from '@layout/mainLayout'
-import { useMediaQuery, useTheme, Grid } from '@mui/material'
+import { useMediaQuery, useTheme, Grid, Box } from '@mui/material'
 import UsersKPI from './components/UsersKPI'
 import UsersSearch from './components/UsersSearch'
 import UsersFilters from './components/UsersFilters'
 import UsersTable from './components/UsersTable'
 import UsersPagination from './components/UsersPagination'
-import { useMemo } from 'react'
+import ExportUsersButton from './components/ExportUsersButton'
+import UserModal from '@components/UserModal'
+import DeleteUserConfirmDialog from '@components/DeleteUserConfirmDialog'
+import { useMemo, useEffect } from 'react'
 
 import { useUsersStore } from '@stores/usersStore'
 import { UsersResponse, getUsers } from '@api/users.api'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
+import { useUserMutations } from '../../hooks/useUserMutations'
+import {
+    useUserModalStore,
+    useDeleteUserDialogStore,
+} from '@stores/userModalStore'
+import { fadeSlideIn } from '@styles/animations'
+import { useTranslation } from 'react-i18next'
 
 export default function Users() {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+    const { t } = useTranslation()
 
     const currentPage = useUsersStore((state) => state.currentPage)
     const rowsPerPage = useUsersStore((state) => state.rowsPerPage)
@@ -23,12 +34,34 @@ export default function Users() {
     const searchQuery = useUsersStore((state) => state.searchQuery)
     const filters = useUsersStore((state) => state.filters)
 
-    const { data, isLoading, isError } = useQuery<UsersResponse>({
+    // User mutations
+    const { createUser, updateUser, deleteUser } = useUserMutations()
+
+    const setOnSubmit = useUserModalStore((state) => state.setOnSubmit)
+    const setOnDelete = useDeleteUserDialogStore((state) => state.setOnDelete)
+
+    // Set up callbacks for modals
+    useEffect(() => {
+        setOnSubmit((data, mode) => {
+            if (mode === 'create') {
+                createUser(data)
+            } else if (mode === 'edit') {
+                updateUser(data)
+            }
+        })
+
+        setOnDelete((id: number) => {
+            deleteUser(id)
+        })
+    }, [createUser, updateUser, deleteUser, setOnSubmit, setOnDelete])
+
+    const { data, isLoading, isError, refetch } = useQuery<UsersResponse>({
         queryKey: ['users'],
         placeholderData: keepPreviousData,
         queryFn: () => {
             const baseParams: Record<string, string> = {
                 limit: '0',
+                select: 'id,firstName,lastName,email,image,role,age,gender',
             }
             if (categoryFilter !== 'all') {
                 return getUsers({
@@ -43,9 +76,7 @@ export default function Users() {
 
     const filteredUsers = useMemo(() => {
         const hasFilters =
-            searchQuery.trim() ||
-            (filters.stockStatus && filters.stockStatus !== 'all') ||
-            (filters.priceRange && filters.priceRange !== 'all')
+            searchQuery.trim() || (filters.role && filters.role !== null)
 
         if (!hasFilters) {
             return users
@@ -55,13 +86,16 @@ export default function Users() {
         if (searchQuery.trim()) {
             filtered = filtered.filter(
                 (user) =>
-                    user.name
+                    user.firstName
                         .toLowerCase()
                         .includes(searchQuery.toLowerCase()) ||
                     user.email
                         ?.toLowerCase()
                         .includes(searchQuery.toLowerCase())
             )
+        }
+        if (filters.role && filters.role !== null) {
+            filtered = filtered.filter((user) => user.role === filters.role)
         }
 
         return filtered
@@ -99,34 +133,69 @@ export default function Users() {
     }, [sortedUsers, currentPage, rowsPerPage])
 
     const totalItems = sortedUsers.length
-
-    console.log(paginatedUsers)
-
     return (
         <MainLayout>
             <Grid container spacing={2} sx={{ mb: 3 }} alignItems="center">
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12, md: 6 }} sx={fadeSlideIn()}>
                     <div className="text-gray-600">
-                        <h1 className="fade-in font-bold text-xl">Products</h1>
-                        <p className="fade-in text-sm">
-                            Manage and monitor your user base
-                        </p>
+                        <h1 className="fade-in font-bold text-xl">
+                            {t('users.title')}
+                        </h1>
+                        <p className="fade-in text-sm">{t('users.subtitle')}</p>
                     </div>
                 </Grid>
+                {!isMobile && (
+                    <Grid size={{ xs: 12, md: 6 }} sx={fadeSlideIn(0.05)}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                            }}
+                        >
+                            <ExportUsersButton
+                                users={sortedUsers}
+                                disabled={isLoading}
+                            />
+                        </Box>
+                    </Grid>
+                )}
             </Grid>
-            <UsersKPI users={users} isLoading={isLoading} />
-            <UsersFilters />
-            <UsersSearch />
-            <UsersTable
-                users={paginatedUsers}
-                isLoading={isLoading}
-                isError={isError}
-            />
-            <UsersPagination
-                totalUsers={totalItems}
-                page={currentPage}
-                rowsPerPage={rowsPerPage}
-            />
+            <Box sx={fadeSlideIn(0.08)}>
+                <UsersKPI users={users} isLoading={isLoading} />
+            </Box>
+            <Box sx={fadeSlideIn(0.12)}>
+                <UsersFilters />
+            </Box>
+            <Box sx={fadeSlideIn(0.16)}>
+                <UsersSearch />
+            </Box>
+            <Box sx={fadeSlideIn(0.2)}>
+                <UsersTable
+                    users={paginatedUsers}
+                    isLoading={isLoading}
+                    isError={isError}
+                    refetch={refetch}
+                />
+            </Box>
+            <Box sx={fadeSlideIn(0.24)}>
+                <UsersPagination
+                    totalUsers={totalItems}
+                    page={currentPage}
+                    rowsPerPage={rowsPerPage}
+                />
+            </Box>
+            {isMobile && (
+                <Box sx={[fadeSlideIn(0.28), { mt: 2 }]}>
+                    <ExportUsersButton
+                        users={sortedUsers}
+                        disabled={isLoading}
+                    />
+                </Box>
+            )}
+
+            {/* Modals */}
+            <UserModal />
+            <DeleteUserConfirmDialog />
         </MainLayout>
     )
 }

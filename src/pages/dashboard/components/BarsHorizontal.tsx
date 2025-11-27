@@ -1,17 +1,25 @@
-import { useMemo } from 'react'
+import { useId, useMemo } from 'react'
 import {
     ResponsiveContainer,
     BarChart,
     Bar,
     XAxis,
     YAxis,
-    Cell,
-    Text,
-    Legend,
+    Tooltip,
+    TooltipProps,
+    LabelList,
 } from 'recharts'
-import { useTheme } from '@mui/material/styles'
+import { alpha, useTheme } from '@mui/material/styles'
+import { Box, Paper, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
-const data = [
+type BarsDataItem = {
+    month: string
+    currentYear: number
+    previousYear: number
+}
+
+const defaultData: BarsDataItem[] = [
     { month: 'Ene', currentYear: 4000, previousYear: 2400 },
     { month: 'Feb', currentYear: 3000, previousYear: 1398 },
     { month: 'Mar', currentYear: 2000, previousYear: 3000 },
@@ -26,129 +34,315 @@ const data = [
     { month: 'Dic', currentYear: 1890, previousYear: 4800 },
 ]
 
-const YAxisLeftTick = ({ y, payload }: any) => {
-    return (
-        <Text x={0} y={y} textAnchor="start" verticalAnchor="middle" scaleToFit>
-            {payload.value}
-        </Text>
-    )
+type BarsHorizontalProps = {
+    data?: BarsDataItem[]
 }
 
-let ctx: CanvasRenderingContext2D | null = null
+export default function BarsHorizontal({
+    data = defaultData,
+}: BarsHorizontalProps) {
+    const theme = useTheme()
+    const chartId = useId()
+    const { t } = useTranslation()
 
-export const measureText14HelveticaNeue = (text: string): number => {
-    if (!ctx) {
-        const canvas = document.createElement('canvas')
-        ctx = canvas.getContext('2d')
-        if (ctx) {
-            ctx.font = "14px 'Helvetica Neue'"
-        }
+    const currencyFormatter = useMemo(
+        () =>
+            new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0,
+            }),
+        []
+    )
+
+    const compactFormatter = useMemo(
+        () =>
+            new Intl.NumberFormat('en-US', {
+                notation: 'compact',
+                compactDisplay: 'short',
+                maximumFractionDigits: 1,
+            }),
+        []
+    )
+
+    const paletteByKey: Record<string, string> = {
+        currentYear: theme.palette.primary.main as string,
+        previousYear: alpha(theme.palette.text.primary, 0.4) as string,
     }
 
-    return ctx ? ctx.measureText(text).width : 0
-}
+    interface PayloadEntry {
+        dataKey: string
+        name: string
+        value: number
+        payload: BarsDataItem
+    }
 
-const BAR_AXIS_SPACE = 10
+    const renderTooltip = (props: TooltipProps<number, string>) => {
+        const { active } = props
+        const payload = (
+            props as TooltipProps<number, string> & { payload?: PayloadEntry[] }
+        ).payload
+        if (!active || !payload || !payload.length) return null
 
-export default function BarsHorizontal() {
-    const theme = useTheme()
+        const monthData = payload[0].payload as (typeof data)[number]
+        const delta = monthData.currentYear - monthData.previousYear
+        const deltaPct = monthData.previousYear
+            ? (delta / monthData.previousYear) * 100
+            : 0
 
-    const currentYearColor = theme.palette.primary.main as string
-    const previousYearColor = `${theme.palette.primary.main}80`
-
-    const maxTextWidth = useMemo(() => {
-        return data.reduce((acc, cur) => {
-            const maxValue = Math.max(cur.currentYear, cur.previousYear)
-            const width = measureText14HelveticaNeue(maxValue.toLocaleString())
-            if (width > acc) {
-                return width
-            }
-            return acc
-        }, 0)
-    }, [])
-
-    return (
-        <ResponsiveContainer
-            width="100%"
-            height={50 * data.length}
-            debounce={50}
-        >
-            <BarChart
-                data={data}
-                layout="vertical"
-                margin={{
-                    left: 10,
-                    right: maxTextWidth + (BAR_AXIS_SPACE - 8),
+        return (
+            <Paper
+                elevation={0}
+                sx={{
+                    p: 2,
+                    borderRadius: 2,
+                    border: '1px solid',
+                    borderColor: 'divider',
                 }}
             >
-                <XAxis hide axisLine={false} type="number" />
-                <YAxis
-                    yAxisId={0}
-                    dataKey="month"
-                    type="category"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={YAxisLeftTick}
-                />
-                <YAxis
-                    orientation="right"
-                    yAxisId={1}
-                    dataKey="currentYear"
-                    type="category"
-                    axisLine={false}
-                    tickLine={false}
-                    tickFormatter={(value) => value.toLocaleString()}
-                    mirror
-                    tick={{
-                        transform: `translate(${maxTextWidth + BAR_AXIS_SPACE}, 0)`,
-                    }}
-                />
-
-                <Legend
-                    wrapperStyle={{
-                        paddingTop: '20px',
-                        width: '100%',
-                        left: 0,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                    iconType="rect"
-                    iconSize={14}
-                    formatter={(value) => (
-                        <span
-                            style={{
-                                color: theme.palette.text.primary as string,
-                                fontSize: '14px',
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'block', mb: 1 }}
+                >
+                    {monthData.month}
+                </Typography>
+                {payload.map((entry) => (
+                    <Box
+                        key={entry.dataKey}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: 3,
+                            mb: 0.5,
+                        }}
+                    >
+                        <Typography
+                            variant="body2"
+                            sx={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center',
-                                minWidth: '100px',
+                                gap: 1,
                             }}
                         >
-                            {value}
-                        </span>
-                    )}
-                />
+                            <Box
+                                component="span"
+                                sx={{
+                                    width: 8,
+                                    height: 8,
+                                    borderRadius: '50%',
+                                    backgroundColor:
+                                        paletteByKey[entry.dataKey] ||
+                                        theme.palette.text.secondary,
+                                }}
+                            />
+                            {entry.name}
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                            {currencyFormatter.format(entry.value)}
+                        </Typography>
+                    </Box>
+                ))}
+                <Typography
+                    variant="caption"
+                    color={delta >= 0 ? 'success.main' : 'error.main'}
+                    sx={{ fontWeight: 600 }}
+                >
+                    {delta >= 0 ? '+' : ''}
+                    {currencyFormatter.format(delta)} ({deltaPct.toFixed(1)}%)
+                    {t('dashboard.bars.vsPreviousYear')}
+                </Typography>
+            </Paper>
+        )
+    }
 
-                <Bar
-                    dataKey="previousYear"
-                    name="Año anterior"
-                    fill={previousYearColor}
-                    minPointSize={2}
-                    barSize={16}
-                    radius={[0, 4, 4, 0]}
-                />
-                <Bar
-                    dataKey="currentYear"
-                    name="Año actual"
-                    fill={currentYearColor}
-                    className="mr-12"
-                    minPointSize={2}
-                    barSize={16}
-                    radius={[0, 4, 4, 0]}
-                />
-            </BarChart>
-        </ResponsiveContainer>
+    const legendItems = [
+        {
+            label: t('dashboard.bars.series.current'),
+            color: paletteByKey.currentYear,
+        },
+        {
+            label: t('dashboard.bars.series.previous'),
+            color: paletteByKey.previousYear,
+        },
+    ]
+
+    const currentGradientId = `${chartId}-current-horizontal`
+    const previousGradientId = `${chartId}-previous-horizontal`
+
+    const renderHorizontalLabel = (props: any) => {
+        const numValue =
+            typeof props.value === 'string'
+                ? parseFloat(props.value)
+                : props.value
+        if (typeof numValue !== 'number' || isNaN(numValue)) return null
+        const x = typeof props.x === 'number' ? props.x : 0
+        const y = typeof props.y === 'number' ? props.y : 0
+        const width = typeof props.width === 'number' ? props.width : 0
+        const height = typeof props.height === 'number' ? props.height : 0
+
+        return (
+            <text
+                x={x + width + 12}
+                y={y + height / 2}
+                dominantBaseline="middle"
+                fill={theme.palette.text.primary as string}
+                style={{ fontSize: 11, fontWeight: 600 }}
+            >
+                {currencyFormatter.format(numValue)}
+            </text>
+        )
+    }
+
+    return (
+        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    gap: 2,
+                    flexWrap: 'wrap',
+                    mb: 2,
+                }}
+            >
+                {legendItems.map((item) => (
+                    <Box
+                        key={item.label}
+                        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                    >
+                        <Box
+                            sx={{
+                                width: 10,
+                                height: 10,
+                                borderRadius: '50%',
+                                background: item.color,
+                            }}
+                        />
+                        <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ fontWeight: 600 }}
+                        >
+                            {item.label}
+                        </Typography>
+                    </Box>
+                ))}
+            </Box>
+
+            <Box sx={{ flex: 1, minHeight: data.length * 48 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                        data={data}
+                        layout="vertical"
+                        margin={{ top: 8, right: 72, left: 4, bottom: 8 }}
+                        barGap={-12}
+                        barCategoryGap="48%"
+                    >
+                        <defs>
+                            <linearGradient
+                                id={previousGradientId}
+                                x1="0"
+                                y1="0"
+                                x2="1"
+                                y2="0"
+                            >
+                                <stop
+                                    offset="0%"
+                                    stopColor={alpha(
+                                        paletteByKey.previousYear,
+                                        0.2
+                                    )}
+                                />
+                                <stop
+                                    offset="100%"
+                                    stopColor={alpha(
+                                        paletteByKey.previousYear,
+                                        0.6
+                                    )}
+                                />
+                            </linearGradient>
+                            <linearGradient
+                                id={currentGradientId}
+                                x1="0"
+                                y1="0"
+                                x2="1"
+                                y2="0"
+                            >
+                                <stop
+                                    offset="0%"
+                                    stopColor={alpha(
+                                        paletteByKey.currentYear,
+                                        0.4
+                                    )}
+                                />
+                                <stop
+                                    offset="100%"
+                                    stopColor={alpha(
+                                        paletteByKey.currentYear,
+                                        1
+                                    )}
+                                />
+                            </linearGradient>
+                        </defs>
+
+                        <XAxis
+                            type="number"
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{
+                                fill: theme.palette.text.secondary as string,
+                                fontSize: 12,
+                                fontWeight: 600,
+                            }}
+                            tickFormatter={(value) =>
+                                compactFormatter.format(value as number)
+                            }
+                        />
+                        <YAxis
+                            dataKey="month"
+                            type="category"
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{
+                                fill: theme.palette.text.secondary as string,
+                                fontSize: 12,
+                                fontWeight: 600,
+                            }}
+                        />
+
+                        <Tooltip
+                            content={renderTooltip}
+                            cursor={{
+                                fill: alpha(theme.palette.primary.main, 0.04),
+                            }}
+                        />
+
+                        <Bar
+                            dataKey="previousYear"
+                            name={t('dashboard.bars.series.previous')}
+                            fill={alpha(paletteByKey.previousYear, 0.18)}
+                            radius={[20, 20, 20, 20]}
+                            barSize={34}
+                            animationDuration={750}
+                            animationEasing="ease-out"
+                        />
+                        <Bar
+                            dataKey="currentYear"
+                            name={t('dashboard.bars.series.current')}
+                            fill={`url(#${currentGradientId})`}
+                            radius={[16, 16, 16, 16]}
+                            barSize={20}
+                            animationDuration={900}
+                            animationEasing="ease-out"
+                        >
+                            <LabelList
+                                dataKey="currentYear"
+                                content={renderHorizontalLabel}
+                            />
+                        </Bar>
+                    </BarChart>
+                </ResponsiveContainer>
+            </Box>
+        </Box>
     )
 }
