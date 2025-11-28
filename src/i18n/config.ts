@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
 const LANG_STORAGE_KEY = 'app_lang'
+const LEGACY_I18NEXT_KEY = 'i18nextLng'
 
 // Lazy-load locale JSON files using dynamic import
 export async function loadLocale(lng: string) {
@@ -28,7 +29,8 @@ function detectInitialLanguage() {
     // Preference order: localStorage -> navigator -> fallback 'en'
     const stored =
         typeof window !== 'undefined'
-            ? localStorage.getItem(LANG_STORAGE_KEY)
+            ? localStorage.getItem(LANG_STORAGE_KEY) ||
+              localStorage.getItem(LEGACY_I18NEXT_KEY)
             : null
     if (stored) return stored
     if (typeof navigator !== 'undefined') {
@@ -48,13 +50,36 @@ i18n.use(initReactI18next).init({
     debug: false,
     resources: {},
     interpolation: { escapeValue: false },
-    react: { useSuspense: true },
+    // avoid suspense in tests and server-less environments
+    react: { useSuspense: false },
 })
 
-// load initial language resources asynchronously (fire-and-forget)
-loadLocale(initialLng).then(() => {
-    // nothing else required; resources are added to i18n
-})
+// load initial language resources and ensure i18n has the language set
+;(async () => {
+    const ok = await loadLocale(initialLng)
+    if (ok) {
+        // ensure i18n internal language and cache are consistent
+        await i18n.changeLanguage(initialLng)
+        try {
+            localStorage.setItem(LANG_STORAGE_KEY, initialLng)
+            localStorage.setItem(LEGACY_I18NEXT_KEY, initialLng)
+        } catch (e) {
+            /* ignore storage errors */
+        }
+    } else if (initialLng !== 'en') {
+        // fallback to English if initial load failed
+        const fallbackOk = await loadLocale('en')
+        if (fallbackOk) {
+            await i18n.changeLanguage('en')
+            try {
+                localStorage.setItem(LANG_STORAGE_KEY, 'en')
+                localStorage.setItem(LEGACY_I18NEXT_KEY, 'en')
+            } catch (e) {
+                /* ignore */
+            }
+        }
+    }
+})()
 
 // helper to change language and persist choice
 export async function changeLanguage(lng: string) {
@@ -62,7 +87,9 @@ export async function changeLanguage(lng: string) {
     if (ok) {
         await i18n.changeLanguage(lng)
         try {
+            // write both keys to remain compatible with other libs/tests
             localStorage.setItem(LANG_STORAGE_KEY, lng)
+            localStorage.setItem(LEGACY_I18NEXT_KEY, lng)
         } catch (e) {
             /* ignore */
         }
