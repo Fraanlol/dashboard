@@ -16,6 +16,7 @@ import { Visibility, VisibilityOff, Dashboard } from '@mui/icons-material'
 import { useAuthStore } from '@stores/authStore'
 import { useNotificationStore } from '@stores/notificationStore'
 import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '@components/LanguageSwitcher'
 
 export default function RegisterPage() {
     const navigate = useNavigate()
@@ -179,7 +180,7 @@ export default function RegisterPage() {
                         {/* Links */}
                         <Box sx={{ textAlign: 'center' }}>
                             <Typography variant="body2">
-                                Already have an account?{' '}
+                                {t('auth.noAccount')}{' '}
                                 <Link
                                     to="/login"
                                     style={{ textDecoration: 'none' }}
@@ -190,12 +191,21 @@ export default function RegisterPage() {
                                         color="primary"
                                         sx={{ fontWeight: 600 }}
                                     >
-                                        Sign In
+                                        {t('auth.button.signIn')}
                                     </Typography>
                                 </Link>
                             </Typography>
                         </Box>
                     </form>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            mb: 2,
+                        }}
+                    >
+                        <LanguageSwitcher />
+                    </Box>
                 </Paper>
             </Container>
         </Box>

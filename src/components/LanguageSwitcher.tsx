@@ -9,10 +9,11 @@ import {
 } from '@mui/material'
 import FlagIcon from '@mui/icons-material/Flag'
 import i18n, { changeLanguage } from '../i18n/config'
+import { US, AR } from 'country-flag-icons/react/3x2'
 
-const LANGS: { code: string; label: string }[] = [
-    { code: 'en', label: 'EN: United States' },
-    { code: 'es', label: 'ES: Argentina' },
+const LANGS: { code: string; label: string; flag?: React.ElementType }[] = [
+    { code: 'en', label: 'EN: United States', flag: US },
+    { code: 'es', label: 'ES: Argentina', flag: AR },
     { code: 'placeho', label: 'Test' },
 ]
 
@@ -34,7 +35,7 @@ const LanguageSwitcher: React.FC = () => {
     const current = LANGS.find((l) => l.code === lang) || LANGS[0]
 
     return (
-        <FormControl size="small" sx={{ minWidth: 110 }}>
+        <FormControl size="small">
             <Select
                 value={lang}
                 onChange={handleChange}
@@ -42,10 +43,13 @@ const LanguageSwitcher: React.FC = () => {
                 displayEmpty
                 renderValue={() => (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <FlagIcon fontSize="small" />
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                            {current.label}
-                        </Typography>
+                        {current.flag && (
+                            <current.flag
+                                title={current.label}
+                                width={20}
+                                height={15}
+                            />
+                        )}
                     </Box>
                 )}
                 sx={{
@@ -63,7 +67,9 @@ const LanguageSwitcher: React.FC = () => {
                         value={l.code}
                         sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
                     >
-                        <FlagIcon fontSize="small" />
+                        {l.flag && (
+                            <l.flag title={l.label} width={20} height={15} />
+                        )}
                         <Typography variant="body2">{l.label}</Typography>
                     </MenuItem>
                 ))}

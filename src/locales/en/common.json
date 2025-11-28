@@ -35,6 +35,13 @@
                 "passwordLength": "Password must be at least 6 characters",
                 "passwordMismatch": "Passwords do not match"
             }
+        },
+        "noAccount": "Don't have an account?",
+        "signUp": "Sign Up",
+        "demo": {
+            "title": "Demo Credentials",
+            "email": "Email",
+            "password": "Password"
         }
     },
     "header": {

@@ -18,6 +18,7 @@ import { useAuthStore } from '@stores/authStore'
 import { useNotificationStore } from '@stores/notificationStore'
 import { DEMO_CONFIG } from '@lib/demo'
 import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '@components/LanguageSwitcher'
 
 export default function LoginPage() {
     const navigate = useNavigate()
@@ -170,7 +171,7 @@ export default function LoginPage() {
                             }}
                         >
                             <Typography variant="body2">
-                                Don't have an account?{' '}
+                                {t('auth.noAccount')}{' '}
                                 <Link
                                     to="/register"
                                     style={{ textDecoration: 'none' }}
@@ -181,35 +182,47 @@ export default function LoginPage() {
                                         color="primary"
                                         sx={{ fontWeight: 600 }}
                                     >
-                                        Sign Up
+                                        {t('auth.signUp')}
                                     </Typography>
                                 </Link>
                             </Typography>
                         </Box>
                     </form>
+                    {/* Language Switcher - Positioned at top right */}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            my: 2,
+                        }}
+                    >
+                        <LanguageSwitcher />
+                    </Box>
                 </Paper>
 
                 {/* Demo Credentials */}
-                <Paper
-                    sx={{
-                        mt: 2,
-                        p: 2,
-                        borderRadius: 2,
-                        bgcolor: 'info.main',
-                        color: 'white',
-                    }}
-                >
-                    {DEMO_CONFIG.enabled && (
-                        <Alert severity="info" sx={{ mb: 3 }}>
-                            <AlertTitle>Demo Credentials</AlertTitle>
+                {DEMO_CONFIG.enabled && (
+                    <Paper
+                        sx={{
+                            mt: 2,
+                            p: 2,
+                            borderRadius: 2,
+                            bgcolor: 'info.main',
+                            color: 'white',
+                        }}
+                    >
+                        <Alert severity="info">
+                            <AlertTitle>{t('auth.demo.title')}</AlertTitle>
                             <Typography variant="body2">
-                                <strong>Email:</strong> {DEMO_CONFIG.demoEmail}
+                                <strong>{t('auth.demo.email')}:</strong>{' '}
+                                {DEMO_CONFIG.demoEmail}
                                 <br />
-                                <strong>Password:</strong> demo123
+                                <strong>{t('auth.demo.password')}:</strong>{' '}
+                                demo123
                             </Typography>
                         </Alert>
-                    )}
-                </Paper>
+                    </Paper>
+                )}
             </Container>
         </Box>
     )

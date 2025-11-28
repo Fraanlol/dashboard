@@ -35,6 +35,13 @@
                 "passwordLength": "La contraseña debe tener al menos 6 caracteres",
                 "passwordMismatch": "Las contraseñas no coinciden"
             }
+        },
+        "noAccount": "¿No tienes una cuenta?",
+        "signUp": "Regístrate",
+        "demo": {
+            "title": "Credenciales de Demostración",
+            "email": "Correo",
+            "password": "Contraseña"
         }
     },
     "header": {

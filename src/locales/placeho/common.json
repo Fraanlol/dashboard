@@ -35,6 +35,13 @@
                 "passwordLength": "Lorem",
                 "passwordMismatch": "Lorem"
             }
+        },
+        "noAccount": "Lorem",
+        "signUp": "Lorem",
+        "demo": {
+            "title": "Lorem Lorem",
+            "email": "Lorem",
+            "password": "Lorem"
         }
     },
     "header": {
