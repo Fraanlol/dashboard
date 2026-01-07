@@ -57,9 +57,8 @@ export const useProductModalStore = create<ProductModalStore>((set) => ({
         set({
             onSubmit: callback,
         }),
-}))
+})
 
-// Delete confirmation dialog store
 interface DeleteDialogStore {
     isOpen: boolean
     productToDelete: { id: number; title: string } | null

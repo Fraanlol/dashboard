@@ -35,7 +35,6 @@ export default function UserModal() {
         Partial<Record<keyof UserFormData, string>>
     >({})
 
-    // Initialize form with selected user data when editing
     useEffect(() => {
         if (mode === 'edit' && selectedUser) {
             setFormData(selectedUser)
@@ -89,7 +88,6 @@ export default function UserModal() {
         value: UserFormData[keyof UserFormData]
     ) => {
         setFormData((prev) => ({ ...prev, [field]: value }))
-        // Clear error when user starts typing
         if (errors[field]) {
             setErrors((prev) => ({ ...prev, [field]: undefined }))
         }

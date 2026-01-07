@@ -4,7 +4,6 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import HomeIcon from '@mui/icons-material/Home'
 import { useTranslation } from 'react-i18next'
 
-// Mapeo de rutas a claves de i18n
 const routeNameMap: Record<string, string> = {
     '/': 'nav.dashboard',
     '/dashboard': 'nav.dashboard',
@@ -30,7 +29,6 @@ export default function Breadcrumbs() {
                 },
             }}
         >
-            {/* Home siempre presente */}
             <Link
                 to="/dashboard"
                 style={{

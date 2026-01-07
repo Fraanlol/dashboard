@@ -40,7 +40,6 @@ export default function ProductModal() {
         Partial<Record<keyof ProductFormData, string>>
     >({})
 
-    // Populate form when editing
     useEffect(() => {
         if (mode === 'edit' && selectedProduct) {
             setFormData(selectedProduct)
@@ -69,7 +68,6 @@ export default function ProductModal() {
                         ? parseFloat(value) || 0
                         : value,
             }))
-            // Clear error when user types
             if (errors[field]) {
                 setErrors((prev) => ({ ...prev, [field]: undefined }))
             }

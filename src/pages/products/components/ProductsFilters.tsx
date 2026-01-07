@@ -29,10 +29,8 @@ export default function ProductsFilters({
     const setStockStatus = useProdStore((state) => state.setStockStatus)
     const setPriceRange = useProdStore((state) => state.setPriceRange)
     const sortField = useProdStore((state) => state.sortField)
-    // Función para resetear todos los filtros
     const resetAllFilters = useProdStore((state) => state.resetFilters)
 
-    // Helper para verificar si hay filtros activos
     const hasActiveFilters =
         currentCategory !== 'all' ||
         filters.stockStatus !== 'all' ||

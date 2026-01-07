@@ -84,7 +84,6 @@ function TableDesktopUsers({
         transition: 'all 0.2s ease',
     } as const
 
-    // Loading state
     if (isLoading) {
         return (
             <TableContainer
@@ -180,7 +179,6 @@ function TableDesktopUsers({
         )
     }
 
-    // Error state
     if (isError) {
         return (
             <Box sx={{ textAlign: 'center', py: 4 }}>
@@ -203,7 +201,6 @@ function TableDesktopUsers({
         )
     }
 
-    // Empty state
     if (users.length === 0) {
         return (
             <Alert severity="info" sx={{ mt: 2 }}>

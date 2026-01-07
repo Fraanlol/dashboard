@@ -1,6 +1,5 @@
 import { createTheme, Theme } from '@mui/material/styles'
 
-// --- Palettes
 const lightPalette = {
     mode: 'light',
     primary: {
@@ -74,7 +73,6 @@ const darkPalette = {
     divider: '#334155',
 }
 
-// --- Typography
 const typography = {
     fontFamily: [
         'Manrope',
@@ -96,12 +94,10 @@ const typography = {
     lg: { fontSize: '1.25rem' },
 }
 
-// -- Radius
 const shape = {
     borderRadius: 10,
 }
 
-// --- Component overrides (minimal)
 const components = {
     MuiButton: {
         styleOverrides: {
@@ -115,7 +111,6 @@ const components = {
     },
 }
 
-// Factory to create theme by mode
 export const createAppTheme = (mode: 'light' | 'dark'): Theme => {
     const pal = mode === 'dark' ? darkPalette : lightPalette
     return createTheme({
@@ -136,6 +131,5 @@ export const createAppTheme = (mode: 'light' | 'dark'): Theme => {
     })
 }
 
-// default theme (light)
 const defaultTheme = createAppTheme('light')
 export default defaultTheme

@@ -29,14 +29,12 @@ export default function Products() {
     const sortField = useProdStore((state) => state.sortField)
     const sortOrder = useProdStore((state) => state.sortOrder)
 
-    // Product mutations
     const { createProduct, updateProduct, deleteProduct } =
         useProductMutations()
 
     const setOnSubmit = useProductModalStore((state) => state.setOnSubmit)
     const setOnDelete = useDeleteDialogStore((state) => state.setOnDelete)
 
-    // Set up callbacks for modals
     useEffect(() => {
         setOnSubmit((data, mode) => {
             if (mode === 'create') {
@@ -149,13 +147,11 @@ export default function Products() {
             const aValue = a[sortField]
             const bValue = b[sortField]
 
-            // Handle string comparison
             if (typeof aValue === 'string' && typeof bValue === 'string') {
                 const comparison = aValue.localeCompare(bValue)
                 return sortOrder === 'asc' ? comparison : -comparison
             }
 
-            // Handle number comparison
             if (typeof aValue === 'number' && typeof bValue === 'number') {
                 return sortOrder === 'asc' ? aValue - bValue : bValue - aValue
             }

@@ -63,7 +63,6 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
         const { profile, demoChanges } = get()
         if (!profile) return
 
-        // ✨ DEMO MODE: Simular cambios solo en memoria
         if (isDemoUser(profile.email ?? undefined)) {
             set({
                 demoChanges: { ...demoChanges, ...updates },
@@ -76,7 +75,6 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
             return
         }
 
-        // Usuario normal: guardar en Supabase
         set({ loading: true, error: null })
         try {
             const updatedProfile = await updateProfile(userId, updates)
@@ -93,7 +91,6 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
         const { profile, demoChanges } = get()
         if (!profile) return
 
-        // ✨ DEMO MODE: Crear preview local
         if (isDemoUser(profile.email ?? undefined)) {
             const previewUrl = URL.createObjectURL(file)
             set({
@@ -107,7 +104,6 @@ export const useProfileStore = create<ProfileStore>((set, get) => ({
             return
         }
 
-        // Usuario normal: subir a Supabase
         set({ loading: true, error: null })
         try {
             if (profile.avatar_url) {

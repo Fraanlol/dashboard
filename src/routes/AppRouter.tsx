@@ -1,4 +1,3 @@
-// src/router/AppRouter.tsx
 import {
     createBrowserRouter,
     RouterProvider,
@@ -18,7 +17,6 @@ import LoginPage from '@pages/auth/LoginPage'
 import RegisterPage from '@pages/auth/RegisterPage'
 import ProfilePage from '@pages/profile/ProfilePage'
 
-// Layout wrapper que incluye ScrollRestoration y Notifications
 function RootLayout() {
     return (
         <>
@@ -44,15 +42,12 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         errorElement: <ServerErrorPage />,
         children: [
-            // Public routes
             { path: '/login', element: <LoginPage /> },
             { path: '/register', element: <RegisterPage /> },
 
-            // Error pages
             { path: '/404', element: <NotFoundPage /> },
             { path: '/500', element: <ServerErrorPage /> },
 
-            // Protected routes (group)
             {
                 element: <ProtectedLayout />,
                 children: [
@@ -63,7 +58,6 @@ const router = createBrowserRouter([
                 ],
             },
 
-            // Catch-all
             { path: '*', element: <NotFoundPage /> },
         ],
     },

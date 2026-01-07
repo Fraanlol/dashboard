@@ -18,7 +18,6 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
         }
     }, [initialized, initialize])
 
-    // Show loading while checking auth
     if (!initialized) {
         return (
             <Box
@@ -34,7 +33,6 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
         )
     }
 
-    // Redirect to login if not authenticated
     if (!user) {
         return <Navigate to="/login" replace />
     }

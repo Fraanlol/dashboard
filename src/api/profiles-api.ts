@@ -19,9 +19,7 @@ export interface UpdateProfileData {
     location?: string | null
     avatar_url?: string | null
 }
-/**
- * Get the current user's profile
- */
+
 export const getProfile = async (userId: string): Promise<Profile | null> => {
     const { data, error } = await supabase
         .from('profiles')
@@ -37,9 +35,6 @@ export const getProfile = async (userId: string): Promise<Profile | null> => {
     return data
 }
 
-/**
- * Update the current user's profile
- */
 export const updateProfile = async (
     userId: string,
     updates: UpdateProfileData
@@ -69,7 +64,6 @@ export const uploadAvatar = async (
     const fileExt = file.name.split('.').pop()
     const fileName = `${userId}/${Date.now()}.${fileExt}`
 
-    // Upload file to storage
     const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(fileName, file, {
@@ -82,7 +76,6 @@ export const uploadAvatar = async (
         throw new Error(uploadError.message)
     }
 
-    // Get public URL
     const {
         data: { publicUrl },
     } = supabase.storage.from('avatars').getPublicUrl(fileName)
@@ -90,11 +83,7 @@ export const uploadAvatar = async (
     return publicUrl
 }
 
-/**
- * Delete avatar image from Supabase Storage
- */
 export const deleteAvatar = async (avatarUrl: string): Promise<void> => {
-    // Extract file path from URL
     const urlParts = avatarUrl.split('/avatars/')
     if (urlParts.length < 2) return
 

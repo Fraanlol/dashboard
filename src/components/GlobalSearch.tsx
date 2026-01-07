@@ -60,19 +60,15 @@ export default function GlobalSearch() {
     const openSearch = useGlobalSearchStore((state) => state.openSearch)
     const { t } = useTranslation()
 
-    // Store setters para filtrar en las páginas
     const setProductSearchQuery = useProdStore((state) => state.setSearchQuery)
     const setUserSearchQuery = useUsersStore((state) => state.setSearchQuery)
 
-    // Keyboard shortcuts
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            // Ctrl+K o Cmd+K para abrir
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault()
                 openSearch()
             }
-            // Escape para cerrar
             if (e.key === 'Escape' && isOpen) {
                 closeSearch()
             }
@@ -82,7 +78,6 @@ export default function GlobalSearch() {
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [isOpen, openSearch, closeSearch])
 
-    // Search query - buscar en múltiples endpoints
     const { data: results, isLoading } = useQuery<SearchResults>({
         queryKey: ['global-search', searchQuery],
         queryFn: async () => {
@@ -114,14 +109,12 @@ export default function GlobalSearch() {
     }, [results])
 
     const handleProductClick = (productId: number) => {
-        // Establecer el query de búsqueda en el store de productos
         setProductSearchQuery(searchQuery)
         closeSearch()
         navigate('/products')
     }
 
     const handleUserClick = (userId: number) => {
-        // Establecer el query de búsqueda en el store de usuarios
         setUserSearchQuery(searchQuery)
         closeSearch()
         navigate('/users')

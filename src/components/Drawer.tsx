@@ -141,7 +141,6 @@ export default function MiniDrawer({
         return location.pathname.startsWith(path)
     }
 
-    // Cerrar drawer al hacer click fuera - SOLO en mobile
     const handleClickOutside = React.useCallback(
         (event: MouseEvent) => {
             if (

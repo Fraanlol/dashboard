@@ -1,4 +1,3 @@
-// notificationStore.ts
 import { create } from 'zustand'
 
 interface NotificationState {

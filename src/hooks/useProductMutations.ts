@@ -69,19 +69,15 @@ export function useProductMutations() {
     const queryClient = useQueryClient()
     const showNotification = useNotificationStore((state) => state.show)
 
-    // Create mutation
     const createMutation = useMutation({
         mutationFn: createProduct,
         onMutate: async (newProduct) => {
-            // Cancel outgoing refetches
             await queryClient.cancelQueries({ queryKey: ['products'] })
 
-            // Snapshot previous value
             const previousProducts = queryClient.getQueryData<ProductsResponse>(
                 ['products', 'all']
             )
 
-            // Optimistically update
             queryClient.setQueryData<ProductsResponse>(
                 ['products', 'all'],
                 (old) => {
@@ -109,12 +105,10 @@ export function useProductMutations() {
         },
         onSuccess: async () => {
             showNotification('Product created successfully!', 'success')
-            // Pequeño delay adicional antes de invalidar para suavizar la transición
             await new Promise((resolve) => setTimeout(resolve, 200))
             queryClient.invalidateQueries({ queryKey: ['products'] })
         },
         onError: (err, newProduct, context) => {
-            // Rollback on error
             if (context?.previousProducts) {
                 queryClient.setQueryData(
                     ['products', 'all'],
@@ -125,7 +119,6 @@ export function useProductMutations() {
         },
     })
 
-    // Update mutation
     const updateMutation = useMutation({
         mutationFn: updateProduct,
         onMutate: async (updatedProduct) => {
@@ -135,7 +128,6 @@ export function useProductMutations() {
                 ['products', 'all']
             )
 
-            // Optimistically update
             queryClient.setQueryData<ProductsResponse>(
                 ['products', 'all'],
                 (old) => {
@@ -171,7 +163,6 @@ export function useProductMutations() {
         },
     })
 
-    // Delete mutation
     const deleteMutation = useMutation({
         mutationFn: deleteProduct,
         onMutate: async (productId) => {
@@ -181,7 +172,6 @@ export function useProductMutations() {
                 ['products', 'all']
             )
 
-            // Optimistically remove
             queryClient.setQueryData<ProductsResponse>(
                 ['products', 'all'],
                 (old) => {

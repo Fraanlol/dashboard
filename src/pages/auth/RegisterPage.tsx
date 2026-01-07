@@ -35,7 +35,6 @@ export default function RegisterPage() {
         e.preventDefault()
         setError('')
 
-        // Validations
         if (!email || !password || !confirmPassword) {
             setError(t('auth.errors.fillFields'))
             return

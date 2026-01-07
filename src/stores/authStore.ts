@@ -25,7 +25,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
     initialize: async () => {
         try {
-            // Get initial session
             const {
                 data: { session },
             } = await supabase.auth.getSession()
@@ -36,7 +35,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
                 initialized: true,
             })
 
-            // Listen for auth changes
             supabase.auth.onAuthStateChange(
                 (_event: AuthChangeEvent, session: Session | null) => {
                     set({

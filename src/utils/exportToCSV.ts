@@ -14,19 +14,16 @@ export function exportToCSV<T extends Record<string, unknown>>(
         return
     }
 
-    // Determinar qué columnas exportar
     const columnsToExport = columns || (Object.keys(data[0]) as (keyof T)[])
 
-    // Crear header row
     const headers = columnsToExport.map((col) => String(col))
     const csvHeaders = headers.join(',')
 
-    // Crear data rows
     const csvRows = data.map((row) => {
         return columnsToExport
             .map((col) => {
                 const value = row[col]
-                // Escapar valores que contengan comas, comillas o saltos de línea
+                // Escape values containing commas, quotes or line breaks
                 if (value === null || value === undefined) return ''
                 const stringValue = String(value)
                 if (
@@ -41,10 +38,8 @@ export function exportToCSV<T extends Record<string, unknown>>(
             .join(',')
     })
 
-    // Combinar headers y rows
     const csvContent = [csvHeaders, ...csvRows].join('\n')
 
-    // Crear blob y descargar
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const url = window.URL.createObjectURL(blob)
     const link = document.createElement('a')

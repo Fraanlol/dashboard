@@ -1,4 +1,3 @@
-// src/App.tsx
 import { AppRouter } from './routes/AppRouter'
 import ErrorBoundary from '@components/ErrorBoundary'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

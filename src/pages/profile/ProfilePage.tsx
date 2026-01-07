@@ -51,7 +51,6 @@ export default function ProfilePage() {
         location: '',
     })
 
-    // ✅ Solo para verificar si es demo
     const isDemo = isDemoUser(profile?.email)
 
     useEffect(() => {
@@ -60,10 +59,9 @@ export default function ProfilePage() {
         }
     }, [user?.id, fetchProfile])
 
-    // ✅ Depender de profile, pero obtener displayProfile dentro
     useEffect(() => {
         if (profile) {
-            const display = getDisplayProfile() // Llamar dentro del useEffect
+            const display = getDisplayProfile()
             setFormData({
                 full_name: display?.full_name || '',
                 email: display?.email || '',
@@ -72,7 +70,7 @@ export default function ProfilePage() {
                 location: display?.location || '',
             })
         }
-    }, [profile, getDisplayProfile]) // ← Depende de profile, no de displayProfile
+    }, [profile, getDisplayProfile])
 
     const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
@@ -116,7 +114,7 @@ export default function ProfilePage() {
     }
 
     const handleCancel = () => {
-        const display = getDisplayProfile() // ✅ Obtener aquí cuando se necesita
+        const display = getDisplayProfile()
         if (display) {
             setFormData({
                 full_name: display.full_name || '',
@@ -132,7 +130,6 @@ export default function ProfilePage() {
     }
 
     if (!profile) {
-        // ✅ Usar profile aquí
         return (
             <Container maxWidth="md" sx={{ py: 4 }}>
                 <LinearProgress />
@@ -140,7 +137,6 @@ export default function ProfilePage() {
         )
     }
 
-    // ✅ Obtener displayProfile solo en el render, no como variable del componente
     const displayProfile = getDisplayProfile()
 
     return (
@@ -197,7 +193,6 @@ export default function ProfilePage() {
                 {loading && <LinearProgress sx={{ mb: 2 }} />}
 
                 {!isEditing ? (
-                    // VIEW MODE - Aquí SÍ necesitas displayProfile
                     <Box>
                         <Box
                             sx={{
@@ -376,7 +371,6 @@ export default function ProfilePage() {
                         </Box>
                     </Box>
                 ) : (
-                    // EDIT MODE - Aquí también necesitas displayProfile para el avatar
                     <Box component="form" noValidate>
                         <Box
                             sx={{

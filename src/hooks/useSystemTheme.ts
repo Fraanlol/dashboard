@@ -5,18 +5,15 @@ export const useSystemTheme = () => {
     const setTheme = useThemeStore((state) => state.setTheme)
 
     useEffect(() => {
-        // Detectar preferencia del sistema
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
         const handleChange = (e: MediaQueryListEvent) => {
-            // Solo cambiar si no hay preferencia guardada
             const stored = localStorage.getItem('theme-storage')
             if (!stored) {
                 setTheme(e.matches ? 'dark' : 'light')
             }
         }
 
-        // Establecer tema inicial si no hay preferencia guardada
         const stored = localStorage.getItem('theme-storage')
         if (!stored) {
             setTheme(mediaQuery.matches ? 'dark' : 'light')
@@ -28,7 +25,6 @@ export const useSystemTheme = () => {
     }, [setTheme])
 }
 
-// Hook para forzar tema del sistema
 export const useSystemThemeSync = () => {
     const setTheme = useThemeStore((state) => state.setTheme)
 

@@ -34,13 +34,11 @@ export default function Users() {
     const searchQuery = useUsersStore((state) => state.searchQuery)
     const filters = useUsersStore((state) => state.filters)
 
-    // User mutations
     const { createUser, updateUser, deleteUser } = useUserMutations()
 
     const setOnSubmit = useUserModalStore((state) => state.setOnSubmit)
     const setOnDelete = useDeleteUserDialogStore((state) => state.setOnDelete)
 
-    // Set up callbacks for modals
     useEffect(() => {
         setOnSubmit((data, mode) => {
             if (mode === 'create') {
@@ -110,13 +108,11 @@ export default function Users() {
             const aValue = a[sortField]
             const bValue = b[sortField]
 
-            // Handle string comparison
             if (typeof aValue === 'string' && typeof bValue === 'string') {
                 const comparison = aValue.localeCompare(bValue)
                 return sortOrder === 'asc' ? comparison : -comparison
             }
 
-            // Handle number comparison
             if (typeof aValue === 'number' && typeof bValue === 'number') {
                 return sortOrder === 'asc' ? aValue - bValue : bValue - aValue
             }

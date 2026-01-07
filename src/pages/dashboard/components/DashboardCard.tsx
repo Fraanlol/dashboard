@@ -7,10 +7,6 @@ interface DashboardCardProps {
     height?: string | number
 }
 
-/**
- * DashboardCard - Wrapper component for dashboard widgets
- * Provides consistent styling and spacing for all dashboard cards
- */
 export default function DashboardCard({
     children,
     title,

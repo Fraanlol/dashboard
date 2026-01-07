@@ -21,7 +21,6 @@ export const CustomThemeProvider = ({ children }: CustomThemeProviderProps) => {
     )
 }
 
-// Hook de conveniencia para mantener la misma API
 export const useThemeMode = () => {
     const mode = useThemeStore((state) => state.mode)
     const toggleTheme = useThemeStore((state) => state.toggleTheme)

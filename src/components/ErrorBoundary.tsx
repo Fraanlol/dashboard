@@ -47,7 +47,6 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     public static getDerivedStateFromError(error: Error): State {
-        // Update state so the next render will show the fallback UI
         return {
             hasError: true,
             error,
@@ -56,7 +55,6 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        // Log error using centralized logger
         logError({
             error,
             errorInfo,
@@ -66,7 +64,6 @@ class ErrorBoundary extends Component<Props, State> {
             },
         })
 
-        // Only update state if component is still mounted
         if (this._isMounted) {
             this.setState({
                 error,
@@ -89,22 +86,18 @@ class ErrorBoundary extends Component<Props, State> {
 
     private handleGoHome = () => {
         if (this.props.navigate) {
-            // Use React Router - navigate will unmount/remount the tree
             this.props.navigate('/')
         } else {
-            // Fallback to window.location
             window.location.href = '/'
         }
     }
 
     public render() {
         if (this.state.hasError) {
-            // Custom fallback UI
             if (this.props.fallback) {
                 return this.props.fallback
             }
 
-            // Default fallback UI
             return (
                 <Box
                     sx={{

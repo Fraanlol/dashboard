@@ -109,7 +109,6 @@ function TableMobileUsers({
         return `${option?.label} ${orderIcon}`
     }
 
-    // Loading skeleton
     if (isLoading) {
         return (
             <Stack spacing={2} sx={{ px: { xs: 0, sm: 0 }, pb: 2 }}>
@@ -169,7 +168,6 @@ function TableMobileUsers({
         )
     }
 
-    // Error state
     if (isError) {
         return (
             <Box sx={{ textAlign: 'center', py: 4 }}>
@@ -192,7 +190,6 @@ function TableMobileUsers({
         )
     }
 
-    // Empty state
     if (users.length === 0) {
         return (
             <Alert severity="info" sx={{ mt: 2 }}>

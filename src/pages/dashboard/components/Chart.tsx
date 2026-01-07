@@ -32,7 +32,6 @@ interface ChartPayloadEntry {
 
 function renderTooltip(props: TooltipProps<number, string>) {
     const { active } = props
-    // TooltipProps doesn't expose payload in its type definition, but it exists at runtime
     const payload = (
         props as TooltipProps<number, string> & {
             payload?: ChartPayloadEntry[]
@@ -72,12 +71,10 @@ export default function Chart({
     const activeUsersColor = theme.palette.primary.main as string
     const newUsersColor = theme.palette.success.main as string
 
-    // Calcular el máximo valor de los datos
     const maxValue = Math.max(
         ...data.map((d) => Math.max(d.activeUsers, d.newUsers))
     )
 
-    // Agregar 20% de padding arriba para que el gráfico tenga espacio
     const yAxisMax = Math.ceil(maxValue * 1.2)
 
     return (

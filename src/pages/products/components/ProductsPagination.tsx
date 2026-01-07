@@ -22,8 +22,6 @@ export default function ProductsPagination({
 }) {
     const { t } = useTranslation()
 
-    // Calculate total filtered items
-
     const totalPages = Math.ceil(totalItems / rowsPerPage)
     const startItem = (page - 1) * rowsPerPage + 1
     const endItem = Math.min(page * rowsPerPage, totalItems)

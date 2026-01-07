@@ -20,7 +20,6 @@ interface UsersResponse {
     limit: number
 }
 
-// Simulated API calls to DummyJSON
 const createUser = async (data: UserFormData): Promise<User> => {
     const response = await fetch('https://dummyjson.com/users/add', {
         method: 'POST',
@@ -50,7 +49,6 @@ export function useUserMutations() {
     const queryClient = useQueryClient()
     const showNotification = useNotificationStore((state) => state.show)
 
-    // Create mutation
     const createMutation = useMutation({
         mutationFn: createUser,
         onMutate: async (newUser) => {
@@ -60,7 +58,6 @@ export function useUserMutations() {
                 'users',
             ])
 
-            // Optimistically update
             queryClient.setQueryData<UsersResponse>(['users'], (old) => {
                 if (!old) return old
                 return {
@@ -93,7 +90,6 @@ export function useUserMutations() {
         },
     })
 
-    // Update mutation
     const updateMutation = useMutation({
         mutationFn: updateUser,
         onMutate: async (updatedUser) => {
@@ -103,7 +99,6 @@ export function useUserMutations() {
                 'users',
             ])
 
-            // Optimistically update
             queryClient.setQueryData<UsersResponse>(['users'], (old) => {
                 if (!old) return old
                 return {
@@ -130,7 +125,6 @@ export function useUserMutations() {
         },
     })
 
-    // Delete mutation
     const deleteMutation = useMutation({
         mutationFn: deleteUser,
         onMutate: async (userId) => {
@@ -140,7 +134,6 @@ export function useUserMutations() {
                 'users',
             ])
 
-            // Optimistically remove
             queryClient.setQueryData<UsersResponse>(['users'], (old) => {
                 if (!old) return old
                 return {

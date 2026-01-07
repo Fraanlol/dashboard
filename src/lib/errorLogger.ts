@@ -19,7 +19,6 @@ interface ErrorContext {
 export function logError({ error, errorInfo, context }: ErrorContext): void {
     const isDevelopment = import.meta.env.DEV
 
-    // Always log to console in development
     if (isDevelopment) {
         console.group('🚨 Error Caught')
         console.error('Error:', error)
@@ -32,7 +31,6 @@ export function logError({ error, errorInfo, context }: ErrorContext): void {
         console.groupEnd()
     }
 
-    // In production, send to error reporting service
     if (!isDevelopment) {
         // TODO: Integrate with error reporting service
         // Examples:
@@ -64,9 +62,6 @@ export function logError({ error, errorInfo, context }: ErrorContext): void {
     }
 }
 
-/**
- * Log a warning (non-fatal error)
- */
 export function logWarning(
     message: string,
     context?: Record<string, unknown>

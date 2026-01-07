@@ -48,7 +48,6 @@ export default function Donut() {
     ]
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#F44236']
 
-    // Calcular total y porcentajes
     const total = data.reduce((sum, item) => sum + item.value, 0)
 
     return (

@@ -1,5 +1,4 @@
 import React from 'react'
-// initialize i18n (lazy-loading will load resources on demand)
 import './i18n/config'
 import ReactDOM from 'react-dom/client'
 import App from './App'
